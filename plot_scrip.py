@@ -37,11 +37,11 @@ def tsneplot(feature_type):
 	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model ixd',shell=True)
 
 	### stage1
-	# subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1ok', shell=True)
+	subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1ok', shell=True)
 	# subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1arg' ,shell=True)
 	# subprocess.run('python plot_feature.py -l outlier -f '+feature_type +' -o temp_img_serial' ,shell=True)
 	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -mode tsne -model xception',shell=True)
-	subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c db -mode cluster -model xception -eps 0.21', shell=True)
+	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c db -mode cluster -model xception -eps 0.21', shell=True)
 
 ### useless features
 # tsneplot('spectrum')

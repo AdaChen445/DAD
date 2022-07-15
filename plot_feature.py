@@ -577,7 +577,7 @@ elif output_type == 'stage1arg':
 
 filenames = glob.glob(os.path.join(input_path, '*.wav'))
 total = len(filenames)
-if total > 10000: filenames = random.choices(filenames, k=3000) #resample
+# if total > 10000: filenames = random.choices(filenames, k=3000) #resample
 
 for idx,filename in enumerate(tqdm(filenames)):
 	if output_type == 'features':

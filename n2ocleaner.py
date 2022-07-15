@@ -10,13 +10,13 @@ import matplotlib.pyplot as plt
 import shutil
 
 
-
-n2o_dir = '../n2o_SM'
+n2o_dir = '../ng2ok_SM'
 model_name = 'xcep_tl100_n2ocleaner_db0.21'
 model = load_model('./log/'+model_name+'/best_0.9936.h5')
 le = pickle.loads(open('./log/'+model_name+'/le.pickle', 'rb').read())
-imagePaths = glob.glob(os.path.join(n2o_dir, '*.png'))
 
+
+imagePaths = glob.glob(os.path.join(n2o_dir, '*.png'))
 result_dir = '../n2o_cleanResult/'
 os.mkdir(result_dir)
 os.mkdir(result_dir+'ok')
