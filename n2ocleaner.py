@@ -3,10 +3,9 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.xception import preprocess_input
 import tensorflow as tf
 import numpy as np
-from imutils import paths
 import pickle
 import cv2
-import os
+import os, glob
 import matplotlib.pyplot as plt
 import shutil
 
@@ -16,7 +15,7 @@ n2o_dir = '../n2o_SM'
 model_name = 'xcep_tl100_n2ocleaner_db0.21'
 model = load_model('./log/'+model_name+'/best_0.9936.h5')
 le = pickle.loads(open('./log/'+model_name+'/le.pickle', 'rb').read())
-imagePaths = list(paths.list_images(n2o_dir))
+imagePaths = glob.glob(os.path.join(n2o_dir, '*.png'))
 
 result_dir = '../n2o_cleanResult/'
 os.mkdir(result_dir)

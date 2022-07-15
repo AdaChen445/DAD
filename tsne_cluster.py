@@ -1,4 +1,3 @@
-# USAGE: $python plot_spec.py -t [label type] -f [feature type] -c [cluster method] -mode [tsne or cluster] -model [pre-trained model]
 from tensorflow.keras.applications.inception_v3 import InceptionV3
 from tensorflow.keras.applications.xception import Xception
 from tensorflow.keras.applications.densenet import DenseNet121, DenseNet201
@@ -28,7 +27,7 @@ import sys
 import numpy as np
 np.set_printoptions(threshold=sys.maxsize, suppress=True)
 from tqdm import tqdm
-import os
+import os, glob
 import shutil
 import argparse
 import cv2

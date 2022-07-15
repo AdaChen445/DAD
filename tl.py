@@ -2,13 +2,12 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, f1_score, recall_score, precision_score
 from sklearn.metrics import ConfusionMatrixDisplay
-from imutils import paths
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
 import pickle
 import cv2
-import os
+import os, glob
 import PIL
 from PIL import Image, ImageOps, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -79,7 +78,7 @@ if is3channel:
 else:
 	dataset_folder = data_folder
 
-imagePaths = list(paths.list_images('../'+dataset_folder))
+imagePaths = glob.glob(os.path.join('../'+dataset_folder, '*.png'))
 lebal_types = len(next(os.walk('../'+dataset_folder))[1])
 img = []
 labels = []

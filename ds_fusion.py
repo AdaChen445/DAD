@@ -5,7 +5,6 @@ from sklearn.metrics import ConfusionMatrixDisplay
 from matplotlib import pyplot as plt
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.applications.xception import preprocess_input
-from imutils import paths
 import numpy as np
 import sys
 np.set_printoptions(threshold=sys.maxsize, suppress=True)
@@ -46,7 +45,7 @@ def DSCombination(Dic1, Dic2):
     return Result
 
 def loadDataSplit(datapath, img_size):
-    imagePaths = list(paths.list_images(datapath))
+    imagePaths = glob.glob(os.path.join(datapath, '*.png'))
     lebal_types = len(next(os.walk(datapath))[1])
     img = []
     labels = []
@@ -66,7 +65,7 @@ def loadDataSplit(datapath, img_size):
     return le, trainX, testX, trainY, testY
 
 def loadDataSplit3c(datapath, img_size):
-    imagePaths = list(paths.list_images(datapath+'/c1'))
+    imagePaths = glob.glob(os.path.join(datapath+'/c1', '*.png'))
     lebal_types = len(next(os.walk(datapath+'/c1'))[1])
     img = []
     labels = []

@@ -1,13 +1,34 @@
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, f1_score, recall_score, precision_score
-from tensorflow.keras.utils import to_categorical
+
 import numpy as np
 import argparse
 import cv2
-import os, glob
 from tqdm import tqdm
 from tensorflow.keras.models import load_model
+
+
+import os, glob
+import numpy as np
+import shutil
+import random
+from tqdm import tqdm
+
+val_dir = '../ng2ok_SM'
+val_model = 
+
+val_dir = val_dir+'/val'
+filenames = glob.glob(os.path.join(val_dir, '*.png'))
+
+
+for filename in tqdm(filenames):
+	
+
+
+
+
+
 
 #########arguments##########
 IMG_HEIGHT = 224
