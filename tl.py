@@ -35,8 +35,6 @@ import tensorflow as tf
 
 
 #########arguments##########
-# EPOCHS_TL = 20
-# EPOCHS_FT = 20
 IMG_HIGHT = 200
 IMG_WIDTH = 401
 IMGSIZE_VIT = 224
@@ -61,7 +59,7 @@ model_name = str(args["n"])
 model_type = str(args["m"])
 data_type = str(args["d"])
 loss_func = str(args['l'])
-EPOCHS_TL = int(args['e'])
+epoch = int(args['e'])
 is3channel = bool(args['c'])
 acti = str(args['tt'])
 model_dir = './log/'+model_name
@@ -133,7 +131,6 @@ for imagePath in tqdm(imagePaths):
 		# image = Image.open(imagePath).convert('RGB')
 		# image = image.resize((224, 224), resample=PIL.Image.BICUBIC)
 		image = np.array(image, dtype=np.uint8)
-
 	# image = equalize_hist(image) #this return float
 	img.append(image)
 	labels.append(label)
@@ -262,16 +259,16 @@ model_checkpoint_callback = ModelCheckpoint(
 	save_best_only=True)
 
 
-opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / EPOCHS_TL)
+opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / epoch)
 # opt = Nadam(learning_rate=INIT_LR, beta_1=0.9, beta_2=0.9)
-# opt = Adamax(learning_rate=INIT_LR, decay=INIT_LR / EPOCHS_TL)
-# opt = SGD(learning_rate=INIT_LR, decay=INIT_LR / EPOCHS_TL)
+# opt = Adamax(learning_rate=INIT_LR, decay=INIT_LR / epoch)
+# opt = SGD(learning_rate=INIT_LR, decay=INIT_LR / epoch)
 
 
 model.compile(loss=loss_func, optimizer=opt, metrics=["accuracy"])
 H = model.fit(x=trainX, y=trainY, batch_size=BS,
 	validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
-	epochs=EPOCHS_TL, callbacks = model_checkpoint_callback)
+	epochs=epoch, callbacks = model_checkpoint_callback)
 
 
 
@@ -298,51 +295,12 @@ plt.savefig(model_dir + "confusionMatrix.png")
 
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, EPOCHS_TL), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, EPOCHS_TL), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, EPOCHS_TL), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0, EPOCHS_TL), H.history["val_accuracy"], label="val_acc")
+plt.plot(np.arange(0, epoch), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, epoch), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, epoch), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, epoch), H.history["val_accuracy"], label="val_acc")
 plt.title("Training Loss and Accuracy on Dataset")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
 plt.legend(loc="lower left")
 plt.savefig(model_dir + "plot_tl.png")
-
-
-  
-###############fine tuning##################
-# base_model.trainable = True
-# for layer in base_model.layers[:100]: #freeze layers before no.100 layer
-# 	layer.trainable = False
-
-# print("[INFO] compiling model...")
-# opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / EPOCHS_FT)
-# model.compile(loss=loss_func, optimizer=opt, metrics=["accuracy"])
-# H_FT = model.fit(x=trainX, y=trainY, batch_size=BS,
-# 	validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
-# 	epochs=EPOCHS_FT+EPOCHS_TL, initial_epoch=H.epoch[-1]+1, callbacks = model_checkpoint_callback)
-
-# print("[INFO] evaluating network...")
-# predictions = model.predict(x=testX, batch_size=BS)
-# f_report = str(classification_report(testY.argmax(axis=1),
-# 		predictions.argmax(axis=1), target_names=le.classes_ ,digits=5))
-# print(f_report)
-
-# acc = H.history["loss"] + H_FT.history["loss"]
-# val_acc = H.history["val_loss"] + H_FT.history["val_loss"]
-# loss = H.history["accuracy"] + H_FT.history["accuracy"]
-# val_loss = H.history["val_accuracy"] + H_FT.history["val_accuracy"]
-# plt.style.use("ggplot")
-# plt.figure()
-# plt.plot(np.arange(0, EPOCHS_FT+EPOCHS_TL), acc, label="train_loss")
-# plt.plot(np.arange(0, EPOCHS_FT+EPOCHS_TL), val_acc, label="val_loss")
-# plt.plot(np.arange(0, EPOCHS_FT+EPOCHS_TL), loss, label="train_acc")
-# plt.plot(np.arange(0, EPOCHS_FT+EPOCHS_TL), val_loss, label="val_acc")
-# plt.plot([EPOCHS_TL,EPOCHS_TL],plt.ylim(), label='Start Fine Tuning')
-# plt.title("Training Loss and Accuracy on Dataset")
-# plt.xlabel("Epoch #")
-# plt.ylabel("Loss/Accuracy")
-# plt.legend(loc="lower left")
-# plt.savefig(model_dir + "plot_tl_ft.png")
-
-
