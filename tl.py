@@ -31,6 +31,7 @@ from tensorflow.keras.applications.densenet import preprocess_input as pi_d
 from tensorflow.keras.applications.resnet import preprocess_input as pi_r
 from tensorflow.keras.applications.resnet_v2 import preprocess_input as pi_r2
 from tensorflow.keras.applications.efficientnet_v2 import preprocess_input as pi_e
+import tensorflow as tf
 
 
 #########arguments##########
@@ -45,6 +46,7 @@ INIT_LR = 1e-4
 FREEZE_PERCENT = 0
 is3channel = False
 #########arguments##########
+
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-n", required=True) #name
@@ -77,8 +79,8 @@ if is3channel:
 	dataset_folder = data_folder+'/c1'
 else:
 	dataset_folder = data_folder
-
-imagePaths = glob.glob(os.path.join('../'+dataset_folder, '*.png'))
+from imutils import paths
+imagePaths = list(paths.list_images('../'+dataset_folder))
 lebal_types = len(next(os.walk('../'+dataset_folder))[1])
 img = []
 labels = []

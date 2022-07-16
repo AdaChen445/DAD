@@ -19,7 +19,7 @@ import os
 # subprocess.run('python mk_csv_delta.py -n xcep_tl20_stage1arg',shell=True)
 # subprocess.run("python mk_plot_delta.py -n xcep_tl20_stage1arg",shell=True)
 
-subprocess.run('python tl.py -n xcep_tl50_stage1_cleaned -m xception -d stage1 -l mse -e 50',shell=True)
+subprocess.run('python tl.py -n xceptl50_stage1 -m xception -d stage1 -l mse -e 50',shell=True)
 # subprocess.run('python train.py -n mynet -d stage1 -e 50',shell=True)
 
 # subprocess.run('python tl.py -n xcep_tl100_n2ocleaner_db0.21 -m xception -d n2ocleaner -l mse -e 100',shell=True)

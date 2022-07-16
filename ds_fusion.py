@@ -45,7 +45,8 @@ def DSCombination(Dic1, Dic2):
     return Result
 
 def loadDataSplit(datapath, img_size):
-    imagePaths = glob.glob(os.path.join(datapath, '*.png'))
+    from imutils import paths
+    imagePaths = list(paths.list_images(datapath))
     lebal_types = len(next(os.walk(datapath))[1])
     img = []
     labels = []
@@ -65,7 +66,8 @@ def loadDataSplit(datapath, img_size):
     return le, trainX, testX, trainY, testY
 
 def loadDataSplit3c(datapath, img_size):
-    imagePaths = glob.glob(os.path.join(datapath+'/c1', '*.png'))
+    from imutils import paths
+    imagePaths = list(paths.list_images(datapath+'/c1'))
     lebal_types = len(next(os.walk(datapath+'/c1'))[1])
     img = []
     labels = []

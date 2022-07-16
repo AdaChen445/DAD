@@ -28,7 +28,8 @@ model_dir = './log/'+model_name+'/'
 
 print("[INFO] loading images...")
 dataset_folder = 'dataset_'+data_type
-imagePaths = glob.glob(os.path.join('../'+dataset_folder, '*.png'))
+from imutils import paths
+imagePaths = list(paths.list_images('../'+dataset_folder))
 lebal_types = len(next(os.walk('../'+dataset_folder))[1])
 img = []
 labels = []

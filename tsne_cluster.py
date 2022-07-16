@@ -27,7 +27,7 @@ import sys
 import numpy as np
 np.set_printoptions(threshold=sys.maxsize, suppress=True)
 from tqdm import tqdm
-import os, glob
+import os
 import shutil
 import argparse
 import cv2
@@ -49,19 +49,21 @@ fea_type = str(args['f']) #spectrogram/specMfcc/specChroma/specMfccChroma/melSpe
 mode = str(args['mode']) #cluster/tsne
 model_name = str(args['model']) #inseption/xception/dense121/dense201/resnet50/resnet50v2/vgg16
 cluster_type = str(args['c'])  #km/ap/ac/db/op/sp/sb/sc
-eps = int(args['eps'])
+eps = float(args['eps'])
 
 #########arguments##########
-cluster_img_path = '../features/'+fea_type
-cluster_type_dir = '../'+cluster_type
-# cluster_result_dir = cluster_type_dir+'/'+model_name+'_'+fea_type+'_clusterResult'
-cluster_result_dir = cluster_type_dir+'/'+eps
-tsne_plot_name = model_name+'_'+label_type+'Label_'+fea_type
-cluster_plot_name = model_name+'_clusterLabel_'+fea_type
+# cluster_img_path = '../features/'+fea_type
+cluster_img_path = '../ok_SM/test_train'
 # cluster_audio_dir = '../for_cluster_audio'
 cluster_audio_dir = '../ok_audio'
+
+cluster_type_dir = '../'+cluster_type
+# cluster_result_dir = cluster_type_dir+'/'+model_name+'_'+fea_type+'_clusterResult'
+cluster_result_dir = cluster_type_dir+'/'+str(eps)
+tsne_plot_name = model_name+'_'+label_type+'Label_'+fea_type
+cluster_plot_name = model_name+'_clusterLabel_'+fea_type
 cluster_num = 20
-resample_num = 3000
+# resample_num = 3000
 #########arguments##########
 
 
@@ -133,7 +135,7 @@ def image_feature(img_path,model_name):
 	img_name = []
 	label = []
 	audio_name = []
-	if len(img_path) > 30000: img_path = random.choices(img_path, k=resample_num) #resample
+	# if len(img_path) > 30000: img_path = random.choices(img_path, k=resample_num) #resample
 	for i in tqdm(img_path):
 		fname=cluster_img_path+'/'+i
 		img = cv2.imread(fname)
