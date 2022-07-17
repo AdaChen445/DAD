@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 import shutil
 
 
-n2o_dir = '../ng2ok_SM'
-model_name = 'xcep_tl100_n2ocleaner_db0.21'
-model = load_model('./log/'+model_name+'/best_0.9936.h5')
+n2o_dir = '../ng2ok_SM/test_train'
+model_name = 'xceptl50_n2ocleaner_okp-ng'
+model = load_model('./log/'+model_name+'/best_0.9968.h5')
 le = pickle.loads(open('./log/'+model_name+'/le.pickle', 'rb').read())
 
 

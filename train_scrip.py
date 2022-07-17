@@ -19,11 +19,19 @@ import os
 # subprocess.run('python mk_csv_delta.py -n xcep_tl20_stage1arg',shell=True)
 # subprocess.run("python mk_plot_delta.py -n xcep_tl20_stage1arg",shell=True)
 
-# subprocess.run('python tl.py -n xceptl50_stage1_okc-ngn2oc -m xception -d okc-ngn2oc -l mse -e 50',shell=True)
+
 
 # subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok-ng -m xception -d ok-ng -l mse -e 50',shell=True)
-# subprocess.run('python tl.py -n xceptl50_n2ocleaner_okc-ng -m xception -d okc-ng -l mse -e 50',shell=True)
-subprocess.run('python tl.py -n xceptl50_n2ocleaner_okp-ng -m xception -d okp-ng -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n xceptl50_n2ocleaner_okp-ng -m xception -d okp-ng -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok21-ng -m xception -d ok21-ng -l mse -e 50',shell=True)
+subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok23-ng -m xception -d ok23-ng -l mse -e 50',shell=True)
+subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok25-ng -m xception -d ok25-ng -l mse -e 50',shell=True)
+
+# subprocess.run('python tl.py -n xceptl50_stage1_ok-ngn2o -m xception -d ok-ngn2o -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n xceptl50_stage1_ok21-ngn2o -m xception -d ok21-ngn2o -l mse -e 50',shell=True)
+subprocess.run('python tl.py -n xceptl50_stage1_ok23-ngn2o -m xception -d ok23-ngn2o -l mse -e 50',shell=True)
+subprocess.run('python tl.py -n xceptl50_stage1_ok25-ngn2o -m xception -d ok25-ngn2o -l mse -e 50',shell=True)
+
 
 
 

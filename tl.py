@@ -124,8 +124,7 @@ for imagePath in tqdm(imagePaths):
 	else:
 		image = cv2.imread(imagePath)
 		if image.shape != (IMG_HIGHT,IMG_WIDTH,3):
-			print(imagePath)
-			print(image.shape)
+			print(imagePath, image.shape)
 			continue
 		image = cv2.resize(image, (IMG_WIDTH, IMG_HIGHT))
 		# image = Image.open(imagePath).convert('RGB')
@@ -258,12 +257,10 @@ model_checkpoint_callback = ModelCheckpoint(
 	mode='min',
 	save_best_only=True)
 
-
 opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / epoch)
 # opt = Nadam(learning_rate=INIT_LR, beta_1=0.9, beta_2=0.9)
 # opt = Adamax(learning_rate=INIT_LR, decay=INIT_LR / epoch)
 # opt = SGD(learning_rate=INIT_LR, decay=INIT_LR / epoch)
-
 
 model.compile(loss=loss_func, optimizer=opt, metrics=["accuracy"])
 H = model.fit(x=trainX, y=trainY, batch_size=BS,

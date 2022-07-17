@@ -17,7 +17,7 @@ import pickle
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-def DSCombination(Dic1, Dic2):
+def dictDSCombination(Dic1, Dic2):
     print('[1]', Dic1, Dic2)
     ## extract the frame dicernment
     sets=set(Dic1.keys()).union(set(Dic2.keys()))
@@ -112,7 +112,7 @@ def arrayDScombination(preds_1, preds_2, le):
     for i in range(len(preds_1)):
         dict_1 = array2dict(preds_1[i], le)
         dict_2 = array2dict(preds_2[i], le)
-        conbi_dict = DSCombination(dict_1, dict_2)
+        conbi_dict = dictDSCombination(dict_1, dict_2)
         conbi_array = dict2array(conbi_dict, le)
         conbi_preds.append(conbi_array)
     conbi_preds = np.array(conbi_preds)
