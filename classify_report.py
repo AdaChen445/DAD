@@ -18,19 +18,19 @@ IMG_DEPTH = 3
 BS = 32
 # dataset_folder = '../eval_ok-ngn2o'
 # dataset_folder = '../eval_ok-ng'
-# dataset_folder = '../eval_ok-n2o'
+dataset_folder = '../eval_ok-n2o'
 
 
 # model_dir = './log/xceptl50_stage1_ok-ngn2o/best_0.9404.h5'
 # model_dir = './log/xceptl50_stage1_ok21-ngn2o/best_0.9519.h5'
-# model_dir = './log/xceptl50_stage1_ok23-ngn2o/best_0..h5'
-# model_dir = './log/xceptl50_stage1_ok25-ngn2o/best_0..h5'
+# model_dir = './log/xceptl50_stage1_ok23-ngn2o/best_0.9475.h5'
+# model_dir = './log/xceptl50_stage1_ok25-ngn2o/best_0.9393.h5'
 
-# model_dir = './log/xceptl50_n2ocleaner_ok-ng/best_0.9698.h5'
+model_dir = './log/xceptl50_n2ocleaner_ok-ng/best_0.9698.h5'
 # model_dir = './log/xceptl50_n2ocleaner_okp-ng/best_0.9968.h5'
 # model_dir = './log/xceptl50_n2ocleaner_ok21-ng/best_0.9807.h5'
 # model_dir = './log/xceptl50_n2ocleaner_ok23-ng/best_0.9817.h5'
-# model_dir = './log/xceptl50_n2ocleaner_ok25-ng/best_0..h5'
+# model_dir = './log/xceptl50_n2ocleaner_ok25-ng/best_0.9737.h5'
 #########arguments##########
 
 
