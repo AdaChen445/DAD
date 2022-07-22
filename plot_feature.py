@@ -1,4 +1,3 @@
-# USAGE: $python plot_spec.py -n [folder label] -f [feature type]
 import matplotlib.pyplot as plt
 import librosa
 import librosa.display
@@ -581,8 +580,11 @@ total = len(filenames)
 
 for idx,filename in enumerate(tqdm(filenames)):
 	if output_type == 'features':
+		
 		fileID = filename.replace('\\', '/')
 		fileID = fileID.split("/")[3].split(".")[0]
+
+
 		output_path = '../features/'+fea_type
 		if not os.path.isdir(output_path): os.mkdir(output_path)
 		out = output_path + '/'+label+'_' + fileID

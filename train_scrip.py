@@ -23,14 +23,12 @@ import os
 
 # subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok-ng -m xception -d ok-ng -l mse -e 50',shell=True)
 # subprocess.run('python tl.py -n xceptl50_n2ocleaner_okp-ng -m xception -d okp-ng -l mse -e 50',shell=True)
-# subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok21-ng -m xception -d ok21-ng -l mse -e 50',shell=True)
-subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok23-ng -m xception -d ok23-ng -l mse -e 50',shell=True)
-subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok25-ng -m xception -d ok25-ng -l mse -e 50',shell=True)
-
 # subprocess.run('python tl.py -n xceptl50_stage1_ok-ngn2o -m xception -d ok-ngn2o -l mse -e 50',shell=True)
-# subprocess.run('python tl.py -n xceptl50_stage1_ok21-ngn2o -m xception -d ok21-ngn2o -l mse -e 50',shell=True)
-subprocess.run('python tl.py -n xceptl50_stage1_ok23-ngn2o -m xception -d ok23-ngn2o -l mse -e 50',shell=True)
-subprocess.run('python tl.py -n xceptl50_stage1_ok25-ngn2o -m xception -d ok25-ngn2o -l mse -e 50',shell=True)
+
+# subprocess.run('python tl.py -n xceptl50_stage1_ok1-ng -m xception -d ok1-ng -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n xceptl50_stage1_ok2-ng -m xception -d ok2-ng -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n xceptl50_stage1_ok3-ng -m xception -d ok3-ng -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n xceptl50_stage1_ok4-ng -m xception -d ok4-ng -l mse -e 50',shell=True)
 
 
 
