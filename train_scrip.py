@@ -19,8 +19,6 @@ import os
 # subprocess.run('python mk_csv_delta.py -n xcep_tl20_stage1arg',shell=True)
 # subprocess.run("python mk_plot_delta.py -n xcep_tl20_stage1arg",shell=True)
 
-
-
 # subprocess.run('python tl.py -n xceptl50_n2ocleaner_ok-ng -m xception -d ok-ng -l mse -e 50',shell=True)
 # subprocess.run('python tl.py -n xceptl50_n2ocleaner_okp-ng -m xception -d okp-ng -l mse -e 50',shell=True)
 # subprocess.run('python tl.py -n xceptl50_stage1_ok-ngn2o -m xception -d ok-ngn2o -l mse -e 50',shell=True)
@@ -45,10 +43,6 @@ import os
 # subprocess.run('python tl.py -n tfvitb16_c3SMfft_mse -m vit -d stage2c3FFT -l mse -e 100 -c True',shell=True)
 # subprocess.run('python tl.py -n tfvitb32_c3SMfft_mse -m vit -d stage2c3FFT -l mse -e 50 -c True',shell=True)
 
-### nFFT
-# subprocess.run('python tl.py -n xception_tl20_stage2512_mae -m xception -d stage2512 -l mse -e 20 ',shell=True)
-# subprocess.run('python tl.py -n xception_tl40_stage22048_mae -m xception -d stage22048 -l mse -e 40 ',shell=True)
-# subprocess.run('python tl.py -n xception_tl20_stage24096_mae -m xception -d stage24096 -l mse -e 20 ',shell=True)
 
 ### custom 3-channel dataset
 # subprocess.run('python tl.py -n xception_tl50_stage2c3SMmc_mse -m xception -d stage2c3SMmc -l mse -e 50',shell=True) #spec/mfcc/melchroma
@@ -60,7 +54,7 @@ import os
 # subprocess.run('python tl.py -n 2xception_tl100_stage2c3MMFFT_mse -m xception -d stage2c3MMFFT -l mse -e 100 -c True',shell=True) #512/1024/2048
 # subprocess.run('python tl.py -n xception_tl100_stage2c3MCqtFFT_mse -m xception -d stage2c3MCqtFFT -l mse -e 100 -c True',shell=True) #512/1024/2048
 
-### datasets
+### feature types
 # subprocess.run('python tl.py -n xception_tl40_stage2_mae -m xception -d stage2 -l mse -e 40 ',shell=True)
 # subprocess.run('python tl.py -n xception_tl40_stage2melchroma_mae -m xception -d stage2melchroma -l mse -e 40 ',shell=True)
 # subprocess.run('python tl.py -n xception_tl40_stage2spectorgram_mae -m xception -d stage2spectrogram -l mse -e 40 ',shell=True)
@@ -73,17 +67,6 @@ import os
 # subprocess.run('python tl.py -n xception_tl100_stage2hm_mae -m xception -d stage2hm -l mse -e 100 ',shell=True) #harmonic/mfcc
 # subprocess.run('python tl.py -n xception_tl100_stage2pm_mae -m xception -d stage2pm -l mse -e 100 ',shell=True) #precrasive/mfcc
 # subprocess.run('python tl.py -n xception_tl50_stage2MCqt_mse -m xception -d stage2MCqt -l mse -e 50',shell=True) #512/1024/2048
-
-
-### classy report
-# subprocess.run('python classify_report.py -n effiv2l_ts100_stage2_poisson -d stage2 -b 0.88',shell=True)
-# subprocess.run('python classify_report.py -n xception_ts100_stage2_poisson -d stage2 -b 0.85',shell=True)
-
-### freq masking
-# subprocess.run('python ts.py -n xception_ts50_fm_stage2 -m xception -d stage2',shell=True)
-# subprocess.run('python ts.py -n efficientb7_ts50_fm_stage2 -m effib7 -d stage2',shell=True)
-# subprocess.run('python ts.py -n effiv2l_ts100_fm_stage2_poisson -m effiv2l -d stage2 -l poisson',shell=True)
-# subprocess.run('python ts.py -n effiv2l_ts100_fm_stage2smc_poisson -m effiv2l -d stage2smc -l poisson',shell=True)
 
 
 ### models

@@ -17,66 +17,62 @@ IMG_WIDTH = 401
 val_ng_dir = '../ng_SM/val'
 val_n2o_dir = '../ng2ok_SM/val'
 val_ok_dir = '../ok_SM/val'
-# val_model_name = 'xceptl50_n2ocleaner_okp-ng'
-# model = load_model('./log/'+val_model_name+'/best_0.9968.h5')
+
 val_model_name = 'xceptl50_stage1_okc-ngn2o'
 model = load_model('./log/'+val_model_name+'/best_0.9519.h5')
 le = pickle.loads(open('./log/'+val_model_name+'/le.pickle', 'rb').read())
 
-###0717 have some serious issue, switch to classfy_report.py to eval model
 
 pred_label = []
 true_label = []
-label_name = ['ng+n2o', 'ok']
 pred_label_n2ocleaner = []
 true_label_n2ocleaner = []
-label_name_n2ocleaner = ['ng', 'ok']
 
 
-# print('[INFO]evaluating: ng')
-# imagePaths = glob.glob(os.path.join(val_ng_dir, '*.png'))
-# ng_ng=0 
-# ng_ok=0
-# for imagePath in imagePaths:
-# 	image = cv2.imread(imagePath)
-# 	image = np.array(image, dtype=np.float32) / 255.0
-# 	image = np.expand_dims(image, axis=0)
-# 	image = preprocess_input(image)
-# 	preds = model.predict(image)[0]
-# 	j = np.argmax(preds)
-# 	# label = le.classes_[j]
+print('[INFO]evaluating: ng')
+imagePaths = glob.glob(os.path.join(val_ng_dir, '*.png'))
+ng_ng=0 
+ng_ok=0
+for imagePath in imagePaths:
+	image = cv2.imread(imagePath)
+	image = np.array(image, dtype=np.float32) / 255.0
+	image = np.expand_dims(image, axis=0)
+	image = preprocess_input(image)
+	preds = model.predict(image)[0]
+	j = np.argmax(preds)
+	# label = le.classes_[j]
 
-# 	pred_label.append(j)
-# 	true_label.append(0)
-# 	pred_label_n2ocleaner.append(j)
-# 	true_label_n2ocleaner.append(0)
-# 	if j==0: 
-# 		ng_ng+=1
-# 	else: 
-# 		ng_ok+=1
-# print(ng_ok, ng_ng)
+	pred_label.append(j)
+	true_label.append(0)
+	pred_label_n2ocleaner.append(j)
+	true_label_n2ocleaner.append(0)
+	if j==0: 
+		ng_ng+=1
+	else: 
+		ng_ok+=1
+print(ng_ok, ng_ng)
 
 
-# print('[INFO]evaluating: n2o')
-# imagePaths = glob.glob(os.path.join(val_n2o_dir, '*.png'))
-# n2o_ng=0 
-# n2o_ok=0
-# for imagePath in imagePaths:
-# 	image = cv2.imread(imagePath)
-# 	image = np.array(image, dtype=np.float32) / 255.0
-# 	image = np.expand_dims(image, axis=0)
-# 	image = preprocess_input(image)
-# 	preds = model.predict(image)[0]
-# 	j = np.argmax(preds)
-# 	# label = le.classes_[j]
+print('[INFO]evaluating: n2o')
+imagePaths = glob.glob(os.path.join(val_n2o_dir, '*.png'))
+n2o_ng=0 
+n2o_ok=0
+for imagePath in imagePaths:
+	image = cv2.imread(imagePath)
+	image = np.array(image, dtype=np.float32) / 255.0
+	image = np.expand_dims(image, axis=0)
+	image = preprocess_input(image)
+	preds = model.predict(image)[0]
+	j = np.argmax(preds)
+	# label = le.classes_[j]
 
-# 	pred_label.append(j)
-# 	true_label.append(0)
-# 	if j==0: 
-# 		n2o_ng+=1
-# 	else: 
-# 		n2o_ok+=1
-# print(n2o_ok, n2o_ng)
+	pred_label.append(j)
+	true_label.append(0)
+	if j==0: 
+		n2o_ng+=1
+	else: 
+		n2o_ok+=1
+print(n2o_ok, n2o_ng)
 
 
 
@@ -111,7 +107,7 @@ print(ok_ok, ok_ng)
 
 
 ### ok/ng
-print(classification_report(true_label_n2ocleaner, pred_label_n2ocleaner, target_names=label_name_n2ocleaner ,digits=5))
+print(classification_report(true_label_n2ocleaner, pred_label_n2ocleaner, target_names=['ng', 'ok'] ,digits=5))
 
 ### ok/ngn2o
-print(classification_report(true_label, pred_label, target_names=label_name ,digits=5))
+print(classification_report(true_label, pred_label, target_names=['ng+n2o', 'ok'] ,digits=5))

@@ -72,7 +72,6 @@ predictions = model.predict(x=testX, batch_size=BS)
 # 		else: final_preds.append(0)
 # 	return final_preds
 # final_preds = threshold_pred(predictions, 0.95)
-
 final_preds = predictions.argmax(axis=1)
 
 

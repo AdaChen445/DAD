@@ -17,9 +17,9 @@ def tsneplot(feature_type):
 	# subprocess.run('python plot_feature.py -l bearing_good -f '+feature_type,shell=True)
 	# subprocess.run('python plot_feature.py -l bearing_bad -f '+feature_type,shell=True)
 	## ori label
-	# subprocess.run('python plot_feature.py -l ok -f '+feature_type+' -o temp_img_seperate',shell=True)
-	# subprocess.run('python plot_feature.py -l ng -f '+feature_type+' -o temp_img_seperate',shell=True)
-	# subprocess.run('python plot_feature.py -l ng2ok -f '+feature_type+' -o temp_img_seperate',shell=True)
+	# subprocess.run('python plot_feature.py -l ok -f '+feature_type,shell=True)
+	# subprocess.run('python plot_feature.py -l ng -f '+feature_type,shell=True)
+	# subprocess.run('python plot_feature.py -l ng2ok -f '+feature_type,shell=True)
 	### bearing
 	# subprocess.run('python plot_feature.py -l bearing_goodN2O -f '+feature_type,shell=True)
 	# subprocess.run('python plot_feature.py -l bearing_badNG -f '+feature_type,shell=True)
@@ -37,7 +37,7 @@ def tsneplot(feature_type):
 	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model ixd',shell=True)
 
 	### stage1
-	subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1ok', shell=True)
+	# subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1ok', shell=True)
 	# subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1arg' ,shell=True)
 	# subprocess.run('python plot_feature.py -l outlier -f '+feature_type +' -o temp_img_serial' ,shell=True)
 
@@ -46,6 +46,11 @@ def tsneplot(feature_type):
 	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c db -mode cluster -model xception -eps 0.21', shell=True)
 	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c db -mode cluster -model xception -eps 0.23', shell=True)
 	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c db -mode cluster -model xception -eps 0.25', shell=True)
+
+	### dcaset2
+	# subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_train', shell=True)
+	subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_test', shell=True)
+
 
 ### useless features
 # tsneplot('spectrum')
@@ -72,8 +77,8 @@ def tsneplot(feature_type):
 # tsneplot('specMfccChroma')
 
 ### useful features
-tsneplot('specMfcc')
-# tsneplot('melChroma')
+# tsneplot('specMfcc')
+tsneplot('melChroma')
 
 
 # tsneplot('melCT')

@@ -52,8 +52,8 @@ ap.add_argument("-m", required=True) #modle
 ap.add_argument("-d", required=True) #datatype
 ap.add_argument("-l", required=True) #loss func
 ap.add_argument("-e", required=True) #epoch tl
-ap.add_argument("-c", required=False) #3channel 
-ap.add_argument("-tt", required=False) #test object
+ap.add_argument("-c") #3channel 
+ap.add_argument("-tt") #test object
 args = vars(ap.parse_args())
 model_name = str(args["n"])
 model_type = str(args["m"])
@@ -62,6 +62,7 @@ loss_func = str(args['l'])
 epoch = int(args['e'])
 is3channel = bool(args['c'])
 acti = str(args['tt'])
+
 model_dir = './log/'+model_name
 if not model_name in ('tt', 'vit'): os.mkdir(model_dir)
 model_dir = model_dir+'/'
@@ -72,14 +73,14 @@ if model_type=='vit':
 
 
 print("[INFO] loading data...")
-data_folder = 'dataset_'+data_type
+data_folder = '../dataset_'+data_type
 if is3channel:
 	dataset_folder = data_folder+'/c1'
 else:
 	dataset_folder = data_folder
 from imutils import paths
-imagePaths = list(paths.list_images('../'+dataset_folder))
-lebal_types = len(next(os.walk('../'+dataset_folder))[1])
+imagePaths = list(paths.list_images(dataset_folder))
+lebal_types = len(next(os.walk(dataset_folder))[1])
 img = []
 labels = []
 for imagePath in tqdm(imagePaths):
@@ -127,14 +128,12 @@ for imagePath in tqdm(imagePaths):
 			print(imagePath, image.shape)
 			continue
 		image = cv2.resize(image, (IMG_WIDTH, IMG_HIGHT))
-		# image = Image.open(imagePath).convert('RGB')
-		# image = image.resize((224, 224), resample=PIL.Image.BICUBIC)
 		image = np.array(image, dtype=np.uint8)
 	# image = equalize_hist(image) #this return float
 	img.append(image)
 	labels.append(label)
 
-img = np.array(img, dtype=np.float32)/255.0 #scale in 0-1
+img = np.array(img, dtype=np.float32)/255.0
 le = LabelEncoder()
 labels = le.fit_transform(labels)
 f = open(model_dir+"le.pickle", "wb")
@@ -236,7 +235,6 @@ else:
 	trainX = input_preprocessing(trainX)
 	testX = input_preprocessing(testX)
 	base_model.trainable = True
-	# base_model.summary()
 	if FREEZE_PERCENT>0:
 		for layer in base_model.layers[:freeze_layer]:
 			layer.trainable = False
@@ -278,17 +276,17 @@ ConfusionMatrixDisplay.from_predictions(testY.argmax(axis=1),
 		predictions.argmax(axis=1), display_labels=le.classes_,colorbar=False, cmap='Blues')
 plt.savefig(model_dir + "confusionMatrix.png")
 
-# f = open(model_dir+"classification_report.txt", "w")
-# f.write(f_report)
-# f.write('acc')
-# f.write(str(H.history["accuracy"])+'\n')
-# f.write('val_acc')
-# f.write(str(H.history["val_accuracy"])+'\n')
-# f.write('val_loss')
-# f.write(str(H.history["val_loss"])+'\n')
-# f.write('loss')
-# f.write(str(H.history["loss"])+'\n')
-# f.close()
+f = open(model_dir+"classification_report.txt", "w")
+f.write(f_report)
+f.write('acc')
+f.write(str(H.history["accuracy"])+'\n')
+f.write('val_acc')
+f.write(str(H.history["val_accuracy"])+'\n')
+f.write('val_loss')
+f.write(str(H.history["val_loss"])+'\n')
+f.write('loss')
+f.write(str(H.history["loss"])+'\n')
+f.close()
 
 plt.style.use("ggplot")
 plt.figure()

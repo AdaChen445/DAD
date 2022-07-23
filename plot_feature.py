@@ -78,7 +78,7 @@ def spectrum(y, sr, out_name, hop_length):
 	# 	plt.loglog(freqs, np.mean(mag**2, axis=1)/(Nfft/2)**2)
 	# 	ax.set_yscale("log")
 	# 	out_name.replace('.png','')
-	# 	fig.savefig(out_name+'_'+str(i)+'.png')
+	# 	fig.savefig(str(i)+'_'+out_name)
 	# 	sextion_index = sextion_index+hop_length
 
 	###whole frame
@@ -97,7 +97,7 @@ def spectrum(y, sr, out_name, hop_length):
 	# ax.axis(xmin=0,xmax=25000)
 	# # ax.set_xscale("log")
 	# # ax.set_yscale("log")
-	# fig.savefig(out_name+'.png')
+	# fig.savefig(out_name)
 
 	img = scale_minmax(img, 0, 255).astype(np.uint8)
 	return np.array([img,img,img,img])
@@ -114,7 +114,7 @@ def spectral_contrast(y, sr, out_name, hop_length):
 	# D = librosa.feature.spectral_contrast(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)
 	# librosa.display.specshow(D,ax=ax, sr=sr, hop_length=hop_length, x_axis='time')
 	# # plt.colorbar(format='%+2.0f dB', ax=ax)
-	# fig.savefig(out_name+'.png')
+	# fig.savefig(out_name)
 
 def tonnetz(y, sr, out_name):
 	### for training
@@ -128,7 +128,7 @@ def tonnetz(y, sr, out_name):
 	# D = librosa.feature.tonnetz(y=y, sr=sr)
 	# librosa.display.specshow(D,ax=ax, sr=sr, y_axis='tonnetz', x_axis='time')
 	# # plt.colorbar(format='%+2.0f dB', ax=ax)
-	# fig.savefig(out_name+'.png')
+	# fig.savefig(out_name)
 
 def mel(y, sr, out_name, hop_length):
 	### for training
@@ -144,7 +144,7 @@ def mel(y, sr, out_name, hop_length):
 	# D = librosa.power_to_db(D, ref=np.max)
 	# fig, ax = plt.subplots()
 	# librosa.display.specshow(D, x_axis='time', y_axis='mel', sr=sr, ax=ax)
-	# fig.savefig(out_name+'.png')
+	# fig.savefig(out_name)
 
 def mfcc(y, sr, out_name, hop_length):
 	### for training
@@ -158,7 +158,7 @@ def mfcc(y, sr, out_name, hop_length):
 	# D = librosa.feature.mfcc(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)
 	# librosa.display.specshow(D,ax=ax, sr=sr, hop_length=hop_length, x_axis='time')
 	# # plt.colorbar(format='%+2.0f dB', ax=ax)
-	# fig.savefig(out_name+'.png')
+	# fig.savefig(out_name)
 
 def chroma(y, sr, out_name, hop_length):
 	### for training
@@ -174,7 +174,7 @@ def chroma(y, sr, out_name, hop_length):
 	# D = librosa.feature.chroma_stft(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)
 	# librosa.display.specshow(D,ax=ax, sr=sr, hop_length=hop_length, x_axis='time', y_axis='chroma')
 	# # plt.colorbar(format='%+2.0f dB', ax=ax)
-	# fig.savefig(out_name+'.png')
+	# fig.savefig(out_name)
 
 def spectrogram(y, sr, out_name, hop_length, log):
 	### for training
@@ -185,8 +185,8 @@ def spectrogram(y, sr, out_name, hop_length, log):
 	img = scale_minmax(D, 0, 255).astype(np.uint8)
 	img = np.flip(img, axis=0) 
 	img = 255-img 
-	img = img[313:473, 0:401] #160 #original size 513*401
-	# img = img[0:473, 0:401] 
+	img = img[313:473, :] #160 #original size 513*401
+	# img = img[0:473, :] 
 	return img
 
 	### for visualize
@@ -198,7 +198,7 @@ def spectrogram(y, sr, out_name, hop_length, log):
 	# librosa.display.specshow(D,ax=ax, sr=sr, hop_length=hop_length, x_axis='time', y_axis=yaix)
 	# ax.axis(ymin=0,ymax=10000) #only need feature below 10k
 	# # plt.colorbar(format='%+2.0f dB', ax=ax)
-	# fig.savefig(out_name+'.png')
+	# fig.savefig(out_name)
 
 ###
 
@@ -214,7 +214,7 @@ def melspec(y, sr, out_name, hop_length):
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
 	D2 = np.flip(D2, axis=0)
 	D2 = 255-D2
-	D2 = D2[313:473, 0:401]
+	D2 = D2[313:473, :]
 
 	img = np.concatenate((D1,D2), axis=0)
 	return img
@@ -225,7 +225,7 @@ def specsc(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, 0:401]
+	D1 = D1[313:473, :]
 
 	D2 = librosa.feature.spectral_contrast(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
@@ -240,7 +240,7 @@ def spectonnetz(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, 0:401]
+	D1 = D1[313:473, :]
 
 	D2 = librosa.feature.tonnetz(y=y, sr=sr)
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
@@ -255,7 +255,7 @@ def specmfccsc(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, 0:401]
+	D1 = D1[313:473, :]
 
 	D2 = librosa.feature.mfcc(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
@@ -274,7 +274,7 @@ def specmfcctonnetz(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, 0:401]
+	D1 = D1[313:473, :]
 
 	D2 = librosa.feature.mfcc(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
@@ -359,7 +359,7 @@ def melspecmfccchroma(y, sr, out_name, hop_length):
 	D4 = scale_minmax(D4, 0, 255).astype(np.uint8)
 	D4 = np.flip(D4, axis=0)
 	D4 = 255-D4
-	D4 = D4[313:473, 0:401]
+	D4 = D4[313:473, :]
 
 	img = np.concatenate((D1,D2,D3,D4), axis=0)
 	return img
@@ -371,14 +371,14 @@ def hpss(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, 0:401] #160
+	D1 = D1[313:473, :] #160
 
 	D2 = np.abs(P)
 	D2 = np.log(D2 + 1e-9)
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
 	D2 = np.flip(D2, axis=0)
 	D2 = 255-D2
-	D2 = D2[313:473, 0:401] #160
+	D2 = D2[313:473, :] #160
 
 	img = np.concatenate((D1,D2), axis=0)
 	return img
@@ -390,7 +390,7 @@ def hmfcc(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, 0:401] #160
+	D1 = D1[313:473, :] #160
 
 	D2 = librosa.feature.mfcc(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length, n_mfcc=40, dct_type=3,norm='ortho')
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
@@ -406,7 +406,7 @@ def pmfcc(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, 0:401] #160
+	D1 = D1[313:473, :] #160
 
 	D2 = librosa.feature.mfcc(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
@@ -431,7 +431,7 @@ def specchroma(y, sr, out_name, hop_length):
 	D1 = np.abs(librosa.stft(y=y, n_fft=hop_length*2,  hop_length=hop_length))
 	D1 = np.log(D1 + 1e-9)
 	D1 = np.flip(D1, axis=0)
-	D1 = D1[313:473, 0:401]
+	D1 = D1[313:473, :]
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = 255-D1
 
@@ -446,7 +446,7 @@ def specmfccchroma(y, sr, out_name, hop_length):
 	D1 = np.abs(librosa.stft(y=y, n_fft=hop_length*2,  hop_length=hop_length))
 	D1 = np.log(D1 + 1e-9)
 	D1 = np.flip(D1, axis=0)
-	D1 = D1[313:473, 0:401]
+	D1 = D1[313:473, :]
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = 255-D1
 	D2 = librosa.feature.mfcc(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)
@@ -488,7 +488,7 @@ def all_feature(y, sr, out_name, hop_length):
 	librosa.display.specshow(D,ax=ax6, sr=sr, y_axis='tonnetz', x_axis='time')
 	# plt.axis('off') #for training
 	img = equalize_adapthist(img)
-	fig.savefig(out_name+'.png',bbox_inches='tight',pad_inches = 0)
+	fig.savefig(out_name,bbox_inches='tight',pad_inches = 0)
 
 def test(y,sr):
 	# D = librosa.feature.rms(y=y)
@@ -509,7 +509,7 @@ def specmfcc(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, 0:401] #160
+	D1 = D1[313:473, :] #160
 
 	D2 = librosa.feature.mfcc(y=y, sr=sr, n_fft=hop_length*2, win_length=hop_length, hop_length=hop_length, n_mfcc=40, dct_type=3,norm='ortho')
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
@@ -551,7 +551,7 @@ def melmfcc(y, sr, out_name, hop_length):
 ap = argparse.ArgumentParser()
 ap.add_argument("-l", required=True) #input folder label
 ap.add_argument("-f", required=True) #specmfcc/melchroma
-ap.add_argument('-o', default='temp_img_seperate') #features(13labels)/temp_img_seperate(ori_label)/temp_img_serial(outlier)/stage1ok/stage1arg
+ap.add_argument('-o', default='temp_img_seperate')
 args = vars(ap.parse_args())
 label = str(args["l"])
 fea_type = str(args["f"])
@@ -563,110 +563,106 @@ fft_size=1024 #401
 # fft_size=2048 #201
 #########arguments##########
 
-if output_type == 'features':
+if output_type == 'features': #new 13label
 	input_path = '../newLabeled/'+label
-elif output_type == 'temp_img_seperate':
+	output_path = '../features/'+fea_type
+
+elif output_type == 'temp_img_seperate': #ori label
 	input_path = '../'+label+'_audio'
-elif output_type == 'temp_img_serial':
+	output_path = '../temp_img/'+label
+
+elif output_type == 'temp_img_serial': #outlier
 	input_path = '../'+label+'_audio'
+
 elif output_type == 'stage1ok':
 	input_path = '../'+label+'_audio'
+	output_path = '../features/'+fea_type
+
 elif output_type == 'stage1arg':
 	input_path = '../'+label+'_audio'
+	output_path = '../features/'+fea_type
+
+elif output_type == 'dcaset2_train':
+	input_path = '../dcase_t2/audio/'+label+'/train'
+	output_path = '../dcase_t2/image/'+label
+	if not os.path.isdir(output_path): os.mkdir(output_path)
+	output_path = '../dcase_t2/image/'+label+'/train'
+
+elif output_type == 'dcaset2_test':
+	input_path = '../dcase_t2/audio/'+label+'/test'
+	output_path = '../dcase_t2/image/'+label
+	if not os.path.isdir(output_path): os.mkdir(output_path)
+	output_path = '../dcase_t2/image/'+label+'/test'
+
+
+if not os.path.isdir('../temp_img'): os.mkdir('../temp_img')
+if not os.path.isdir(output_path): os.mkdir(output_path)
 
 filenames = glob.glob(os.path.join(input_path, '*.wav'))
-total = len(filenames)
-# if total > 10000: filenames = random.choices(filenames, k=3000) #resample
-
 for idx,filename in enumerate(tqdm(filenames)):
-	if output_type == 'features':
-		
-		fileID = filename.replace('\\', '/')
-		fileID = fileID.split("/")[3].split(".")[0]
+	fileID = filename.split(os.path.sep)[-1].replace('.wav', '.png')
 
-
-		output_path = '../features/'+fea_type
-		if not os.path.isdir(output_path): os.mkdir(output_path)
-		out = output_path + '/'+label+'_' + fileID
-	elif output_type == 'temp_img_seperate':
-		if not os.path.isdir('../temp_img'): os.mkdir('../temp_img')
-		fileID = filename.replace('\\', '/')
-		fileID = fileID.split("/")[2].split(".")[0]
-		output_path = '../temp_img/'+label
-		if not os.path.isdir(output_path): os.mkdir(output_path)
-		out = output_path+'/'+label+'_' + fileID
+	if output_type in ('features', 'temp_img_seperate', 'stage1ok', 'stage1arg', 'dcaset2_train', 'dcaset2_test'):
+		out_name = output_path + '/'+label+'_' + fileID
 	elif output_type == 'temp_img_serial':
-		if not os.path.isdir('../temp_img'): os.mkdir('../temp_img')
-		out = '../temp_img/'+label+'_' + str(idx) 
+		out_name = '../temp_img/'+label+'_' + str(idx) 
 		idx = idx + 1
-	elif output_type == 'stage1ok':
-		fileID = filename.replace('\\', '/')
-		fileID = fileID.split("/")[2].split(".")[0]
-		output_path = '../features/'+fea_type
-		if not os.path.isdir(output_path): os.mkdir(output_path)
-		out = output_path + '/'+label+'_' + fileID
-	elif output_type == 'stage1arg':
-		fileID = filename.replace('\\', '/')
-		fileID = fileID.split("/")[2].split(".")[0]
-		output_path = '../features/'+fea_type
-		if not os.path.isdir(output_path): os.mkdir(output_path)
-		out = output_path + '/'+label+'_' + fileID
 
 
 	signalData, sr = librosa.load(filename, sr=None)
 	# signalData = signalData[0:sr*4]
 	if fea_type == 'mel':
-		img = mel(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = mel(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'specMfcc':
-		img = specmfcc(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = specmfcc(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'melChroma':
-		img = melchroma(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = melchroma(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'spectrogram':
-		img = spectrogram(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2), log=False)
+		img = spectrogram(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2), log=False)
 	elif fea_type == 'spectrum':
-		img = spectrum(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = spectrum(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'mfcc':
-		img = mfcc(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = mfcc(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'tonnetz':
-		img = tonnetz(signalData, sr=sr, out_name=out)
+		img = tonnetz(signalData, sr=sr, out_name=out_name)
 	elif fea_type == 'chroma':
-		img = chroma(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = chroma(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'spectral':
-		img = spectral_contrast(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = spectral_contrast(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'all':
-		all_feature(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		all_feature(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'specChroma':
-		img = specchroma(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = specchroma(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'specMfccChroma':
-		img = specmfccchroma(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = specmfccchroma(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'melSpec':
-		img = melspec(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = melspec(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'melMfcc':
-		img = melmfcc(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = melmfcc(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'melMfccChroma':
-		img = melmfccchroma(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = melmfccchroma(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'melSpecMfccChroma':
-		img = melspecmfccchroma(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = melspecmfccchroma(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'specsc':
-		img = specsc(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = specsc(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'spectonnetz':
-		img = spectonnetz(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = spectonnetz(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'specmfccsc':
-		img = specmfccsc(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = specmfccsc(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'specmfcctonnetz':
-		img = specmfcctonnetz(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = specmfcctonnetz(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'hpss':
-		img = hpss(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = hpss(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'mfccchroma':
-		img = mfccchroma(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = mfccchroma(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'hmfcc':
-		img = hmfcc(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = hmfcc(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'pmfcc':
-		img = pmfcc(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = pmfcc(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'melCT':
-		img = melchromatonnetz(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = melchromatonnetz(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'mfccCT':
-		img = mfccchromatonnetz(signalData, sr=sr, out_name=out, hop_length=int(fft_size/2))
+		img = mfccchromatonnetz(signalData, sr=sr, out_name=out_name, hop_length=int(fft_size/2))
 	elif fea_type == 'test':
 		img = test(signalData, sr=sr)
 
@@ -674,4 +670,4 @@ for idx,filename in enumerate(tqdm(filenames)):
 		img = add_verti_hori_gaussian_noise(img)
 
 	# img = cv2.resize(img,(401,200))
-	skimage.io.imsave(out+'.png', img)
+	skimage.io.imsave(out_name, img)

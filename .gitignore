@@ -1,6 +1,7 @@
 __pycache__/
+archive_data/
 benchmark/
 dataanalysis_results/
 log/
-test_meterial/
+test/
 

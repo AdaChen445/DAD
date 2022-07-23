@@ -320,7 +320,6 @@ elif mode == 'cluster':
 
 
 	print('[INFO] moving files...')
-	### make classes folder & copy to result folder
 	if not os.path.isdir(cluster_type_dir): os.mkdir(cluster_type_dir)
 	os.mkdir(cluster_result_dir)
 
@@ -336,7 +335,7 @@ elif mode == 'cluster':
 		shutil.copy(cluster_img_path+'/'+str(cluster_df['image_name'][i]), cluster_result_dir+'/img/'+str(cluster_df['cluster_label'][i]))
 		shutil.copy(cluster_audio_dir+'/'+str(cluster_df['audio_name'][i]), cluster_result_dir+'/audio/'+str(cluster_df['cluster_label'][i]))
 
-	### save data to csv for cluster_merge.py
+	print('[INFO] saving data to csv...')
 	cluster_color = []
 	manual_color = []
 	tsne_x = []
@@ -359,7 +358,6 @@ elif mode == 'cluster':
 
 
 	# print('[INFO] cluster evaluating...')
-	# ### auto eval how good the cluster result is
 	# f_report = open(cluster_type+'/'+'cluster_eval_report.txt', 'a')
 	# f_ok = open(cluster_result_dir+'/ok_label.txt', 'w')
 	# cluster_img_folder = os.listdir(cluster_result_dir+'/img')
@@ -393,10 +391,8 @@ elif mode == 'cluster':
 	cluster_label = clester_df['cluster_label']
 	manual_color = clester_df['manual_color']
 	cluster_color = clester_df['cluster_color']
-	### outside of folder
-	# plot_name = '../'+cluster_type+'/'+model_name+'_'+fea_type+'_'+cluster_type+'_compare'
-	### inside of folder
-	plot_name = cluster_result_dir+'/'+model_name+'_'+fea_type+'_'+cluster_type+'_compare'
+	# plot_name = '../'+cluster_type+'/'+model_name+'_'+fea_type+'_'+cluster_type+'_compare' #outside of folder
+	plot_name = cluster_result_dir+'/'+model_name+'_'+fea_type+'_'+cluster_type+'_compare' #inside of folder
 
 	### tsne accroding to menual label
 	# ok_label = []
