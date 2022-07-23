@@ -509,7 +509,7 @@ def specmfcc(y, sr, out_name, hop_length):
 	D1 = scale_minmax(D1, 0, 255).astype(np.uint8)
 	D1 = np.flip(D1, axis=0)
 	D1 = 255-D1
-	D1 = D1[313:473, :] #160
+	# D1 = D1[313:473, :] #160
 
 	D2 = librosa.feature.mfcc(y=y, sr=sr, n_fft=hop_length*2, win_length=hop_length, hop_length=hop_length, n_mfcc=40, dct_type=3,norm='ortho')
 	D2 = scale_minmax(D2, 0, 255).astype(np.uint8)
@@ -549,12 +549,12 @@ def melmfcc(y, sr, out_name, hop_length):
 
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-l", required=True) #input folder label
-ap.add_argument("-f", required=True) #specmfcc/melchroma
+ap.add_argument('-l', required=True) #input folder label
+ap.add_argument('-f', required=True) #specmfcc/melchroma
 ap.add_argument('-o', default='temp_img_seperate')
 args = vars(ap.parse_args())
-label = str(args["l"])
-fea_type = str(args["f"])
+label = str(args['l'])
+fea_type = str(args['f'])
 output_type = str(args['o'])
 
 #########arguments##########
@@ -580,8 +580,6 @@ elif output_type == 'dcaset2_train':
 
 elif output_type == 'dcaset2_test':
 	input_path = '../dcase_t2/audio/'+label+'/test'
-	# output_path = '../dcase_t2/image/'+label
-	# if not os.path.isdir(output_path): os.mkdir(output_path)
 	output_path = '../dcase_t2/image/'+label+'/test'
 
 

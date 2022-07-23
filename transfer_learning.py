@@ -47,17 +47,17 @@ is3channel = False
 
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-n", required=True) #name
-ap.add_argument("-m", required=True) #modle
-ap.add_argument("-d", required=True) #datatype
-ap.add_argument("-l", required=True) #loss func
-ap.add_argument("-e", required=True) #epoch tl
-ap.add_argument("-c") #3channel 
-ap.add_argument("-tt") #test object
+ap.add_argument('-n', required=True) #name
+ap.add_argument('-m', required=True) #modle
+ap.add_argument('-d', required=True) #datatype
+ap.add_argument('-l', required=True) #loss func
+ap.add_argument('-e', required=True) #epoch tl
+ap.add_argument('-c') #3channel 
+ap.add_argument('-tt') #test object
 args = vars(ap.parse_args())
-model_name = str(args["n"])
-model_type = str(args["m"])
-data_type = str(args["d"])
+model_name = str(args['n'])
+model_type = str(args['m'])
+data_type = str(args['d'])
 loss_func = str(args['l'])
 epoch = int(args['e'])
 is3channel = bool(args['c'])

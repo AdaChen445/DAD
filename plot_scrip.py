@@ -41,16 +41,22 @@ def tsneplot(feature_type):
 	# subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1arg' ,shell=True)
 	# subprocess.run('python plot_feature.py -l outlier -f '+feature_type +' -o temp_img_serial' ,shell=True)
 
-	# subprocess.run('python tsne.py  -f '+feature_type +' -model xception',shell=True)
-	# subprocess.run('python clustering.py  -f '+feature_type +' -c ac -model xception', shell=True)
+	# subprocess.run('python clustering.py  -f '+feature_type +' -c km -model xception', shell=True)
 	# subprocess.run('python clustering.py  -f '+feature_type +' -c db  -model xception -eps 0.21', shell=True)
 	# subprocess.run('python clustering.py  -f '+feature_type +' -c db  -model xception -eps 0.23', shell=True)
 	# subprocess.run('python clustering.py  -f '+feature_type +' -c db  -model xception -eps 0.25', shell=True)
 
 	### dcaset2
-	# subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_train', shell=True)
-	# subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_test', shell=True)
-	subprocess.run('python tsne.py  -f '+feature_type +' -model xception',shell=True)
+	subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_train', shell=True)
+	subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_test', shell=True)
+	
+	subprocess.run('python tsne.py  -t fan -f '+feature_type ,shell=True)
+	subprocess.run('python tsne.py  -t fan -f '+feature_type +' -model xception',shell=True)
+	subprocess.run('python tsne.py  -t fan -f '+feature_type +' -model inception',shell=True)
+	subprocess.run('python tsne.py  -t fan -f '+feature_type +' -model dense121',shell=True)
+	subprocess.run('python tsne.py  -t fan -f '+feature_type +' -model xception',shell=True)
+	subprocess.run('python tsne.py  -t fan -f '+feature_type +' -model resnet50',shell=True)
+	subprocess.run('python tsne.py  -t fan -f '+feature_type +' -model vgg16',shell=True)
 
 
 ### useless features
@@ -79,7 +85,7 @@ def tsneplot(feature_type):
 
 ### useful features
 tsneplot('specMfcc')
-# tsneplot('melChroma')
+tsneplot('melChroma')
 
 
 # tsneplot('melCT')

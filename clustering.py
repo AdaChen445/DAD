@@ -37,13 +37,13 @@ from scipy.cluster.vq import whiten
 
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-f", required=True)
-ap.add_argument("-c", required=False)
-ap.add_argument("-model", required=True)
+ap.add_argument('-f', required=True)
+ap.add_argument('-c', required=False)
+ap.add_argument('-model', required=True)
 ap.add_argument('-eps')
 args = vars(ap.parse_args())
-fea_type = str(args['f']) #spectrogram/specMfcc/specChroma/specMfccChroma/melSpec/melChroma or others
 model_name = str(args['model']) #inseption/xception/dense121/dense201/resnet50/resnet50v2/vgg16
+feature_type = str(args['f']) #spectrogram/specMfcc/specChroma/specMfccChroma/melSpec/melChroma or others
 cluster_type = str(args['c'])  #km/ap/ac/db/op/sp/sb/sc
 # eps = float(args['eps'])
 
@@ -52,10 +52,10 @@ cluster_img_path = '../ok_SM/test_train'
 cluster_audio_dir = '../ok_audio'
 
 cluster_type_dir = '../'+cluster_type
-cluster_result_dir = cluster_type_dir+'/'+model_name+'_'+fea_type+'_clusterResult'
+cluster_result_dir = cluster_type_dir+'/'+model_name+'_'+feature_type+'_clusterResult'
 # cluster_result_dir = cluster_type_dir+'/'+str(eps)
 
-cluster_plot_name = cluster_result_dir+'/'+model_name+'_'+fea_type+'_'+cluster_type
+cluster_plot_name = cluster_result_dir+'/'+model_name+'_'+feature_type+'_'+cluster_type
 
 cluster_num = 20
 #########arguments##########
@@ -98,10 +98,8 @@ def image_feature(img_path,model_name=None):
 		fname=cluster_img_path+'/'+i
 		img = cv2.imread(fname)
 		img = cv2.resize(img, (input_size, input_size))
-		#######CV preprocessing#######
 		# img = equalize_hist(img)
 		# img = whiten(img)
-		#######CV preprocessing#######
 		img = img.astype("float") / 255.0
 		x = img_to_array(img)
 		x=np.expand_dims(x,axis=0)
@@ -176,6 +174,7 @@ elif cluster_type == 'sb':
 elif cluster_type == 'sc':
 	clusters = SpectralCoclustering(n_clusters=classes, random_state=42)
 clusters.fit(img_features)
+
 cluster_df = pd.DataFrame()
 cluster_df["image_name"] = img_name
 cluster_df["cluster_label"] = clusters.labels_
@@ -197,6 +196,8 @@ for i in range(len(cluster_df)):
 	shutil.copy(cluster_img_path+'/'+str(cluster_df['image_name'][i]), cluster_result_dir+'/img/'+str(cluster_df['cluster_label'][i]))
 	shutil.copy(cluster_audio_dir+'/'+str(cluster_df['audio_name'][i]), cluster_result_dir+'/audio/'+str(cluster_df['cluster_label'][i]))
 
+
+print('[INFO] visualizing...')
 cluster_color = []
 manual_color = []
 tsne_x = []
@@ -207,14 +208,11 @@ for i in range(img_features_scatter.shape[0]):
 	tsne_x.append(img_features_scatter[i,0])
 	tsne_y.append(img_features_scatter[i,1])
 
-
-print('[INFO] visualizing...')
 font_size = 5
 fig, ax = plt.subplots(figsize=(8,6))
 for i in range(len(tsne_x)):
-	ax.text(tsne_x[i], tsne_y[i], cluster_label[i], 
+	ax.text(tsne_x[i], tsne_y[i], cluster_df["cluster_label"][i], 
 			color=cluster_color[i], fontdict={'weight': 'bold', 'size': font_size})
-ax.set_title('outlier removal clustering')
 ax.set_axis_off()
-fig.suptitle(model_name+'_'+fea_type+'_'+cluster_type)
+fig.suptitle(model_name+'_'+feature_type+'_'+cluster_type)
 fig.savefig(cluster_plot_name)
