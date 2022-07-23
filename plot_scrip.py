@@ -41,15 +41,16 @@ def tsneplot(feature_type):
 	# subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1arg' ,shell=True)
 	# subprocess.run('python plot_feature.py -l outlier -f '+feature_type +' -o temp_img_serial' ,shell=True)
 
-	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -mode tsne -model xception',shell=True)
-	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c ac -mode cluster -model xception', shell=True)
-	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c db -mode cluster -model xception -eps 0.21', shell=True)
-	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c db -mode cluster -model xception -eps 0.23', shell=True)
-	# subprocess.run('python tsne_cluster.py -t ori -f '+feature_type +' -c db -mode cluster -model xception -eps 0.25', shell=True)
+	# subprocess.run('python tsne.py  -f '+feature_type +' -model xception',shell=True)
+	# subprocess.run('python clustering.py  -f '+feature_type +' -c ac -model xception', shell=True)
+	# subprocess.run('python clustering.py  -f '+feature_type +' -c db  -model xception -eps 0.21', shell=True)
+	# subprocess.run('python clustering.py  -f '+feature_type +' -c db  -model xception -eps 0.23', shell=True)
+	# subprocess.run('python clustering.py  -f '+feature_type +' -c db  -model xception -eps 0.25', shell=True)
 
 	### dcaset2
 	# subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_train', shell=True)
-	subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_test', shell=True)
+	# subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_test', shell=True)
+	subprocess.run('python tsne.py  -f '+feature_type +' -model xception',shell=True)
 
 
 ### useless features
@@ -77,8 +78,8 @@ def tsneplot(feature_type):
 # tsneplot('specMfccChroma')
 
 ### useful features
-# tsneplot('specMfcc')
-tsneplot('melChroma')
+tsneplot('specMfcc')
+# tsneplot('melChroma')
 
 
 # tsneplot('melCT')

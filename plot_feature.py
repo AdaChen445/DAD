@@ -567,36 +567,26 @@ if output_type == 'features': #new 13label
 	input_path = '../newLabeled/'+label
 	output_path = '../features/'+fea_type
 
-elif output_type == 'temp_img_seperate': #ori label
-	input_path = '../'+label+'_audio'
-	output_path = '../temp_img/'+label
-
 elif output_type == 'temp_img_serial': #outlier
 	input_path = '../'+label+'_audio'
 
-elif output_type == 'stage1ok':
+elif output_type == ('temp_img_seperate', 'stage1ok', 'stage1arg'):
 	input_path = '../'+label+'_audio'
-	output_path = '../features/'+fea_type
-
-elif output_type == 'stage1arg':
-	input_path = '../'+label+'_audio'
-	output_path = '../features/'+fea_type
+	output_path = '../temp_img/'+label
 
 elif output_type == 'dcaset2_train':
 	input_path = '../dcase_t2/audio/'+label+'/train'
-	output_path = '../dcase_t2/image/'+label
-	if not os.path.isdir(output_path): os.mkdir(output_path)
 	output_path = '../dcase_t2/image/'+label+'/train'
 
 elif output_type == 'dcaset2_test':
 	input_path = '../dcase_t2/audio/'+label+'/test'
-	output_path = '../dcase_t2/image/'+label
-	if not os.path.isdir(output_path): os.mkdir(output_path)
+	# output_path = '../dcase_t2/image/'+label
+	# if not os.path.isdir(output_path): os.mkdir(output_path)
 	output_path = '../dcase_t2/image/'+label+'/test'
 
 
 if not os.path.isdir('../temp_img'): os.mkdir('../temp_img')
-if not os.path.isdir(output_path): os.mkdir(output_path)
+if not os.path.isdir(output_path): os.makedirs(output_path)
 
 filenames = glob.glob(os.path.join(input_path, '*.wav'))
 for idx,filename in enumerate(tqdm(filenames)):

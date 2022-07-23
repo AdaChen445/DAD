@@ -83,17 +83,12 @@ ok_ok=0
 for imagePath in imagePaths:
 	image = cv2.imread(imagePath)
 	if image.shape != (IMG_HIGHT,IMG_WIDTH,3): continue
-	###
-	# image = cv2.resize(image, (IMG_WIDTH, IMG_HIGHT))
-	# image = np.array(image, dtype=np.uint8)
-	###
 	image = np.array(image, dtype=np.float32) / 255.0
 	image = np.expand_dims(image, axis=0)
 	image = preprocess_input(image)
 	preds = model.predict(image)[0]
 	j = np.argmax(preds)
-	label = le.classes_[j]
-	print(j, label)
+	# label = le.classes_[j]
 
 	pred_label.append(j)
 	true_label.append(1)

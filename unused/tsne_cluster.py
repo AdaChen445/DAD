@@ -74,18 +74,6 @@ def scale_minmax(X, min=0.0, max=1.0):
     X_scaled = X_std * (max - min) + min
     return X_scaled
 
-def modify_contrast_and_brightness(img):
-	# 公式： Out_img = alpha*(In_img) + beta
-	# alpha: alpha參數 (>0)，表示放大的倍数 (通常介於 0.0 ~ 3.0之間)，能夠反應對比度
-	# a>1時，影象對比度被放大， 0<a<1時 影象對比度被縮小。
-	# beta:  beta参数，用來調節亮度，b>0 時亮度增強，b<0 時亮度降低。
-	array_alpha = np.array([3.0]) # contrast 
-	array_beta = np.array([-1.0]) # brightness
-	img = cv2.add(img, array_beta)
-	img = cv2.multiply(img, array_alpha)
-	img = np.clip(img, 0, 255)
-	return img
-
 def image_feature(img_path,model_name):
 	if model_name == 'inception':
 		model = InceptionV3(weights='imagenet', include_top=False)
@@ -143,8 +131,6 @@ def image_feature(img_path,model_name):
 		img = cv2.imread(fname)
 		img = cv2.resize(img, (input_size, input_size))
 		#######CV preprocessing#######
-		# img = cv2.fastNlMeansDenoisingColored(img,None,8,10,7,21)
-		# img = modify_contrast_and_brightness(img)
 		# img = equalize_hist(img)
 		# img = whiten(img)
 		#######CV preprocessing#######
@@ -194,7 +180,6 @@ def image_feature(img_path,model_name):
 				label_num=2
 			else:
 				label_num=3
-
 		elif label_type == 'new':
 			label_name=label_list[1]
 			if label_name=='1':
@@ -269,6 +254,7 @@ if mode == 'tsne':
 	for i in range(img_features_scatter.shape[0]):
 		ax1.text(img_features_scatter[i,0], img_features_scatter[i,1],str(label[i]), 
 				color=color_list[label[i]], fontdict={'weight': 'bold', 'size': font_size})
+
 		if label[i] in (1, 2, 3, 4, 11, 13):
 			ax2.text(img_features_scatter[i,0], img_features_scatter[i,1],str(label[i]), 
 				color='blue', fontdict={'weight': 'bold', 'size': font_size})
@@ -289,6 +275,7 @@ if mode == 'tsne':
 	# ax.scatter(img_features_scatter[:,0], img_features_scatter[:,1], img_features_scatter[:,2], 
 	# 		c=plt.cm.Set1(label[:]))
 	# plt.show()
+
 
 elif mode == 'cluster':
 	print('[INFO] clustering...')
@@ -334,6 +321,7 @@ elif mode == 'cluster':
 	for i in range(len(cluster_df)):
 		shutil.copy(cluster_img_path+'/'+str(cluster_df['image_name'][i]), cluster_result_dir+'/img/'+str(cluster_df['cluster_label'][i]))
 		shutil.copy(cluster_audio_dir+'/'+str(cluster_df['audio_name'][i]), cluster_result_dir+'/audio/'+str(cluster_df['cluster_label'][i]))
+
 
 	print('[INFO] saving data to csv...')
 	cluster_color = []
