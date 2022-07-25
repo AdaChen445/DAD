@@ -23,10 +23,21 @@ import os
 # subprocess.run('python transfer_learning.py -n xceptl50_n2ocleaner_okp-ng -m xception -d okp-ng -l mse -e 50',shell=True)
 # subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok-ngn2o -m xception -d ok-ngn2o -l mse -e 50',shell=True)
 
-# subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok1-ng -m xception -d ok1-ng -l mse -e 50',shell=True)
-# subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok2-ng -m xception -d ok2-ng -l mse -e 50',shell=True)
-# subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok3-ng -m xception -d ok3-ng -l mse -e 50',shell=True)
-# subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok4-ng -m xception -d ok4-ng -l mse -e 50',shell=True)
+# subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok1-ng -m xception -d ok1-ng -l mse -e 50 -tt 200',shell=True)
+# subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok2-ng -m xception -d ok2-ng -l mse -e 50 -tt 200',shell=True)
+# subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok3-ng -m xception -d ok3-ng -l mse -e 50 -tt 200',shell=True)
+# subprocess.run('python transfer_learning.py -n xceptl50_stage1_ok4-ng -m xception -d ok4-ng -l mse -e 50 -tt 200',shell=True)
+
+# subprocess.run('python transfer_learning.py -n xceptl50_stage1_MC_ok1-ng -m xception -d MC_ok1-ng -l mse -e 50 -tt 140',shell=True)
+# subprocess.run('python transfer_learning.py -n xceptl50_stage1_MC_ok2-ng -m xception -d MC_ok2-ng -l mse -e 50 -tt 140',shell=True)
+# subprocess.run('python transfer_learning.py -n xceptl50_stage1_MC_ok3-ng -m xception -d MC_ok3-ng -l mse -e 50 -tt 140',shell=True)
+# subprocess.run('python transfer_learning.py -n xceptl50_stage1_MC_ok4-ng -m xception -d MC_ok4-ng -l mse -e 50 -tt 140',shell=True)
+
+subprocess.run('python transfer_learning.py -n xceptl50_stage1_MM_ok1-ng -m xception -d MM_ok1-ng -l mse -e 50 -tt 168',shell=True)
+subprocess.run('python transfer_learning.py -n xceptl50_stage1_MM_ok2-ng -m xception -d MM_ok2-ng -l mse -e 50 -tt 168',shell=True)
+subprocess.run('python transfer_learning.py -n xceptl50_stage1_MM_ok3-ng -m xception -d MM_ok3-ng -l mse -e 50 -tt 168',shell=True)
+subprocess.run('python transfer_learning.py -n xceptl50_stage1_MM_ok4-ng -m xception -d MM_ok4-ng -l mse -e 50 -tt 168',shell=True)
+subprocess.run('python transfer_learning.py -n xceptl50_stage1_MM_ok5-ng -m xception -d MM_ok5-ng -l mse -e 50 -tt 168',shell=True)
 
 
 

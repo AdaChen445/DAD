@@ -4,7 +4,6 @@ from sklearn.metrics import classification_report, f1_score, recall_score, preci
 from sklearn.metrics import ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 import numpy as np
-import argparse
 import pickle
 import cv2
 import os, glob
@@ -35,7 +34,7 @@ import tensorflow as tf
 
 
 #########arguments##########
-IMG_HIGHT = 200
+# IMG_HIGHT = 140
 IMG_WIDTH = 401
 IMGSIZE_VIT = 224
 IMG_DEPTH = 3
@@ -45,7 +44,7 @@ FREEZE_PERCENT = 0
 is3channel = False
 #########arguments##########
 
-
+import argparse
 ap = argparse.ArgumentParser()
 ap.add_argument('-n', required=True) #name
 ap.add_argument('-m', required=True) #modle
@@ -61,7 +60,7 @@ data_type = str(args['d'])
 loss_func = str(args['l'])
 epoch = int(args['e'])
 is3channel = bool(args['c'])
-acti = str(args['tt'])
+IMG_HIGHT = int(args['tt'])
 
 model_dir = './log/'+model_name
 if not model_name in ('tt', 'vit'): os.mkdir(model_dir)
@@ -69,7 +68,6 @@ model_dir = model_dir+'/'
 if model_type=='vit':
 	IMG_WIDTH = IMGSIZE_VIT
 	IMG_HIGHT = IMGSIZE_VIT
-
 
 
 print("[INFO] loading data...")
@@ -85,28 +83,6 @@ img = []
 labels = []
 for imagePath in tqdm(imagePaths):
 	label = imagePath.split(os.path.sep)[-2]
-	### image resizing
-	# image = Image.open(imagePath).convert('RGB')
-	# if resize_method==1:
-	# 	image = image.resize((IMG_HIGHT, IMG_WIDTH), resample=PIL.Image.BICUBIC)
-	# elif resize_method==2:
-	# 	image = image.resize((IMG_HIGHT, IMG_WIDTH), resample=PIL.Image.BILINEAR)
-	# elif resize_method==3:
-	# 	image = image.resize((IMG_HIGHT, IMG_WIDTH), resample=PIL.Image.HAMMING)
-	# elif resize_method==4:
-	# 	image = image.resize((IMG_HIGHT, IMG_WIDTH), resample=PIL.Image.LANCZOS)
-	# elif resize_method==5:
-	# 	image = image.resize((IMG_HIGHT, IMG_WIDTH), resample=PIL.Image.BOX)
-	# elif resize_method==6:
-	# 	image = image.resize((IMG_HIGHT, IMG_WIDTH), resample=PIL.Image.NEAREST)
-	# image = cv2.imread(imagePath) #cv2 default is inter_linear
-	# if resize_method==7:
-	# 	image = cv2.resize(image,(IMG_HIGHT, IMG_WIDTH), interpolation=cv2.INTER_CUBIC)
-	# elif resize_method==8:
-	# 	image = cv2.resize(image,(IMG_HIGHT, IMG_WIDTH), interpolation=cv2.INTER_AREA)
-	# elif resize_method==9:
-	# 	image = cv2.resize(image,(IMG_HIGHT, IMG_WIDTH), interpolation=cv2.INTER_NEAREST)
-
 	if is3channel:
 		###custom 3-channel
 		imagePath1 = imagePath
@@ -127,7 +103,7 @@ for imagePath in tqdm(imagePaths):
 		if image.shape != (IMG_HIGHT,IMG_WIDTH,3):
 			print(imagePath, image.shape)
 			continue
-		image = cv2.resize(image, (IMG_WIDTH, IMG_HIGHT))
+		image = cv2.resize(image, (IMG_WIDTH, IMG_HIGHT)) #cv2 default is inter_linear
 		image = np.array(image, dtype=np.uint8)
 	# image = equalize_hist(image) #this return float
 	img.append(image)
@@ -153,31 +129,31 @@ print(np.array(img).shape, np.array(labels).shape)
 
 print("[INFO] compiling model...")
 if model_type == 'res50':
-	base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
+	base_model = ResNet50(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_r
 	freeze_layer = round(107*FREEZE_PERCENT)
 elif model_type == 'res50v2':
-	base_model = ResNet50V2(weights='imagenet', include_top=False, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
+	base_model = ResNet50V2(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_r2
 	freeze_layer = round(103*FREEZE_PERCENT)
 elif model_type == 'res152':
-	base_model = ResNet152(weights='imagenet', include_top=False, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
+	base_model = ResNet152(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_r
 	freeze_layer = round(311*FREEZE_PERCENT)
 elif model_type == 'res152v2':
-	base_model = ResNet152V2(weights='imagenet', include_top=False, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
+	base_model = ResNet152V2(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_r2
 	freeze_layer = round(307*FREEZE_PERCENT)
 elif model_type == 'dense121':
-	base_model = DenseNet121(weights='imagenet', include_top=False, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
+	base_model = DenseNet121(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_d
 	freeze_layer = round(242*FREEZE_PERCENT)
 elif model_type == 'dense201':
-	base_model = DenseNet201(weights='imagenet', include_top=False, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
+	base_model = DenseNet201(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_d
 	freeze_layer = round(402*FREEZE_PERCENT)
 elif model_type == 'inception':
-	base_model = InceptionV3(weights='imagenet', include_top=False, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
+	base_model = InceptionV3(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_i
 	freeze_layer = round(189*FREEZE_PERCENT)
 elif model_type == 'xception':
@@ -185,7 +161,7 @@ elif model_type == 'xception':
 	input_preprocessing = pi_x
 	freeze_layer = round(81*FREEZE_PERCENT)
 elif model_type == 'effiv2l':
-	base_model = EfficientNetV2L(weights='imagenet', include_top=False, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
+	base_model = EfficientNetV2L(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_e
 	freeze_layer = round(956*FREEZE_PERCENT)
 elif model_type == 'vit':
@@ -251,8 +227,8 @@ else:
 model_checkpoint_callback = ModelCheckpoint(
 	filepath=model_dir+'best_{val_accuracy:.4f}.h5',
 	save_weights_only=False,
-	monitor='val_loss',
-	mode='min',
+	# monitor='val_loss', mode='min',
+	monitor='val_accuracy', mode='max',
 	save_best_only=True)
 
 opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / epoch)
@@ -275,18 +251,6 @@ print(f_report)
 ConfusionMatrixDisplay.from_predictions(testY.argmax(axis=1), 
 		predictions.argmax(axis=1), display_labels=le.classes_,colorbar=False, cmap='Blues')
 plt.savefig(model_dir + "confusionMatrix.png")
-
-f = open(model_dir+"classification_report.txt", "w")
-f.write(f_report)
-f.write('acc')
-f.write(str(H.history["accuracy"])+'\n')
-f.write('val_acc')
-f.write(str(H.history["val_accuracy"])+'\n')
-f.write('val_loss')
-f.write(str(H.history["val_loss"])+'\n')
-f.write('loss')
-f.write(str(H.history["loss"])+'\n')
-f.close()
 
 plt.style.use("ggplot")
 plt.figure()

@@ -179,13 +179,11 @@ def chroma(y, sr, out_name, hop_length):
 def spectrogram(y, sr, out_name, hop_length, log):
 	### for training
 	D = np.abs(librosa.stft(y=y, n_fft=hop_length*2, hop_length=hop_length))
-	# D = np.abs(librosa.stft(y=y, n_fft=hop_length*2, hop_length=hop_length))
 	D = np.log(D + 1e-9)
-	# D = equalize_hist(D)
 	img = scale_minmax(D, 0, 255).astype(np.uint8)
 	img = np.flip(img, axis=0) 
 	img = 255-img 
-	img = img[313:473, :] #160 #original size 513*401
+	# img = img[313:473, :] #160 #original size 513*401
 	# img = img[0:473, :] 
 	return img
 
@@ -569,10 +567,17 @@ if output_type == 'features': #new 13label
 
 elif output_type == 'temp_img_serial': #outlier
 	input_path = '../'+label+'_audio'
+	output_path = '../temp_img'
 
-elif output_type == ('temp_img_seperate', 'stage1ok', 'stage1arg'):
+elif output_type in ('temp_img_seperate', 'stage1ok', 'stage1arg'):
+	if fea_type == 'specMfcc':
+		fea_shorten = '_SM'
+	elif fea_type == 'melChroma':
+		fea_shorten = '_MC'
+	elif fea_type == 'melMfcc':
+		fea_shorten = 'MM'
 	input_path = '../'+label+'_audio'
-	output_path = '../temp_img/'+label
+	output_path = '../'+label+fea_shorten
 
 elif output_type == 'dcaset2_train':
 	input_path = '../dcase_t2/audio/'+label+'/train'
@@ -582,9 +587,8 @@ elif output_type == 'dcaset2_test':
 	input_path = '../dcase_t2/audio/'+label+'/test'
 	output_path = '../dcase_t2/image/'+label+'/test'
 
-
-if not os.path.isdir('../temp_img'): os.mkdir('../temp_img')
 if not os.path.isdir(output_path): os.makedirs(output_path)
+
 
 filenames = glob.glob(os.path.join(input_path, '*.wav'))
 for idx,filename in enumerate(tqdm(filenames)):
@@ -593,7 +597,7 @@ for idx,filename in enumerate(tqdm(filenames)):
 	if output_type in ('features', 'temp_img_seperate', 'stage1ok', 'stage1arg', 'dcaset2_train', 'dcaset2_test'):
 		out_name = output_path + '/'+label+'_' + fileID
 	elif output_type == 'temp_img_serial':
-		out_name = '../temp_img/'+label+'_' + str(idx) 
+		out_name = output_path+ '/'+label+'_' + str(idx)
 		idx = idx + 1
 
 

@@ -18,10 +18,8 @@ IMG_HEIGHT = 200
 IMG_WIDTH = 401
 IMG_DEPTH = 3
 BS = 32
-# dataset_folder = '../eval_ok-ngn2o'
 dataset_folder = '../eval_ok-ng'
 # dataset_folder = '../eval_ok-n2o'
-
 
 # model_dir = './log/xceptl50_stage1_ok-ngn2o/best_0.9404.h5'
 model_dir = './log/xceptl50_n2ocleaner_ok-ng/best_0.9698.h5'
@@ -58,26 +56,27 @@ print("[INFO] evaluating...")
 model = load_model(model_dir)
 predictions = model.predict(x=testX, batch_size=BS)
 
+
+def threshold_pred(prediction, threshold):
+	thresholded_pred = []
+	for i in range(len(prediction)):
+		if prediction[i][1]>threshold:
+			thresholded_pred.append([0,1])
+		else: thresholded_pred.append([1,0])
+	thresholded_pred = np.array(thresholded_pred)
+	return thresholded_pred
+predictions = threshold_pred(predictions, 0.9)
+
+
 ### check id of mispredicts
-# for i in range(len(imgs)):
-# 	if labels[i][0]==1:
-# 		if predictions[i].argmax() != labels[i].argmax(): print(img_ids[i])
-
-
-# def threshold_pred(prediction, threshold):
-# 	final_preds = []
-# 	for i in range(len(prediction)):
-# 		if prediction[i][1]>threshold:
-# 			final_preds.append(1)
-# 		else: final_preds.append(0)
-# 	return final_preds
-# final_preds = threshold_pred(predictions, 0.95)
-final_preds = predictions.argmax(axis=1)
+for i in range(len(imgs)):
+	if labels[i][0]==1:
+		if predictions[i].argmax() != labels[i].argmax(): print(img_ids[i])
 
 
 print(classification_report(testY.argmax(axis=1),
-	final_preds, target_names=le.classes_, digits=5))
+	predictions.argmax(axis=1), target_names=le.classes_, digits=5))
 
 ConfusionMatrixDisplay.from_predictions(testY.argmax(axis=1), 
-	final_preds, display_labels=le.classes_,colorbar=False, cmap='Blues')
+	predictions.argmax(axis=1), display_labels=le.classes_,colorbar=False, cmap='Blues')
 plt.show()

@@ -4,13 +4,14 @@ from tensorflow.keras.applications.densenet import DenseNet121, DenseNet201
 from tensorflow.keras.applications.resnet import ResNet50
 from tensorflow.keras.applications.resnet_v2 import ResNet50V2
 from tensorflow.keras.applications.vgg16 import VGG16
-
+from tensorflow.keras.applications.efficientnet_v2 import EfficientNetV2L
 from tensorflow.keras.applications.inception_v3 import preprocess_input as pi_i
 from tensorflow.keras.applications.xception import preprocess_input as pi_x
 from tensorflow.keras.applications.densenet import preprocess_input as pi_d
 from tensorflow.keras.applications.resnet import preprocess_input as pi_r
 from tensorflow.keras.applications.resnet_v2 import preprocess_input as pi_r2
 from tensorflow.keras.applications.vgg16 import preprocess_input as pi_v
+from tensorflow.keras.applications.efficientnet_v2 import preprocess_input as pi_e
 
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
@@ -79,12 +80,15 @@ def image_feature(img_path, model_name):
 	elif model_name== 'vgg16':
 		model = VGG16(weights='imagenet', include_top=False)
 		input_preprocessing = pi_v
+	elif model_name== 'effiv2l':
+		model = EfficientNetV2L(weights='imagenet', include_top=False)
+		input_preprocessing = pi_e
 
 	input_size=224
 	img_features = []
 	soundtype_id = []
 	anomaly_status = []
-	filenames = glob.glob(os.path.join(img_path, 'test/*.png')) + glob.glob(os.path.join(img_path, 'train/*.png'))
+	filenames = glob.glob(os.path.join(img_path, 'test/*.png')) #+ glob.glob(os.path.join(img_path, 'train/*.png'))
 	# if len(filenames) > 30000: filenames = random.choices(filenames, k=resample_num) #resample
 
 	for filename in tqdm(filenames):

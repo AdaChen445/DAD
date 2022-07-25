@@ -40,15 +40,17 @@ ap = argparse.ArgumentParser()
 ap.add_argument('-f', required=True)
 ap.add_argument('-c', required=False)
 ap.add_argument('-model', required=True)
+ap.add_argument('-in_path')
 ap.add_argument('-eps')
 args = vars(ap.parse_args())
 model_name = str(args['model']) #inseption/xception/dense121/dense201/resnet50/resnet50v2/vgg16
 feature_type = str(args['f']) #spectrogram/specMfcc/specChroma/specMfccChroma/melSpec/melChroma or others
 cluster_type = str(args['c'])  #km/ap/ac/db/op/sp/sb/sc
+in_path = str(args['in_path'])
 # eps = float(args['eps'])
 
 #########arguments##########
-cluster_img_path = '../ok_SM/test_train'
+cluster_img_path = '../'+in_path+'/test_train'
 cluster_audio_dir = '../ok_audio'
 
 cluster_type_dir = '../'+cluster_type
@@ -57,7 +59,7 @@ cluster_result_dir = cluster_type_dir+'/'+model_name+'_'+feature_type+'_clusterR
 
 cluster_plot_name = cluster_result_dir+'/'+model_name+'_'+feature_type+'_'+cluster_type
 
-cluster_num = 20
+cluster_classes = 20
 #########arguments##########
 
 
@@ -154,11 +156,10 @@ img_features_scatter = scale_minmax(img_features_scatter)
 
 
 print('[INFO] clustering...')
-classes = cluster_num
 if cluster_type == 'km':
-	clusters = KMeans(n_clusters=classes, random_state=42, init='k-means++')
+	clusters = KMeans(n_clusters=cluster_classes, random_state=42, init='k-means++')
 elif cluster_type == 'ac':
-	clusters = AgglomerativeClustering(n_clusters=classes, linkage='ward')
+	clusters = AgglomerativeClustering(n_clusters=cluster_classes, linkage='ward')
 elif cluster_type == 'gm':
 	clusters = GaussianMixture(random_state=42)
 elif cluster_type == 'ap':
@@ -168,11 +169,11 @@ elif cluster_type == 'db':
 elif cluster_type == 'op':
 	clusters = OPTICS(n_jobs=-1, xi=0.2)
 elif cluster_type == 'sp':
-	clusters = SpectralClustering(n_clusters=classes, random_state=42)
+	clusters = SpectralClustering(n_clusters=cluster_classes, random_state=42)
 elif cluster_type == 'sb':
-	clusters = SpectralBiclustering(n_clusters=classes, random_state=42)
+	clusters = SpectralBiclustering(n_clusters=cluster_classes, random_state=42)
 elif cluster_type == 'sc':
-	clusters = SpectralCoclustering(n_clusters=classes, random_state=42)
+	clusters = SpectralCoclustering(n_clusters=cluster_classes, random_state=42)
 clusters.fit(img_features)
 
 cluster_df = pd.DataFrame()
@@ -189,12 +190,12 @@ os.mkdir(cluster_result_dir+'/img')
 os.mkdir(cluster_result_dir+'/audio')
 os.mkdir(cluster_result_dir+'/img/-1')
 os.mkdir(cluster_result_dir+'/audio/-1')
-for i in range(classes):
+for i in range(cluster_classes):
 	os.mkdir(cluster_result_dir+'/img/'+str(i))
 	os.mkdir(cluster_result_dir+'/audio/'+str(i))
 for i in range(len(cluster_df)):
 	shutil.copy(cluster_img_path+'/'+str(cluster_df['image_name'][i]), cluster_result_dir+'/img/'+str(cluster_df['cluster_label'][i]))
-	shutil.copy(cluster_audio_dir+'/'+str(cluster_df['audio_name'][i]), cluster_result_dir+'/audio/'+str(cluster_df['cluster_label'][i]))
+	# shutil.copy(cluster_audio_dir+'/'+str(cluster_df['audio_name'][i]), cluster_result_dir+'/audio/'+str(cluster_df['cluster_label'][i]))
 
 
 print('[INFO] visualizing...')
