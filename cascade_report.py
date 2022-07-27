@@ -19,13 +19,13 @@ IMG_WIDTH = 401
 IMG_DEPTH = 3
 BS = 32
 
-IMG_HEIGHT = 200
-dataset_folder = '../eval_SM_ok-ng'
-# dataset_folder = '../eval_SM_ok-n2o'
-model_dir_1 = './log/xceptl50_stage1_ok1-ng/best_0.9852.h5'
-model_dir_2 = './log/xceptl50_stage1_ok2-ng/best_0.9819.h5'
-model_dir_3 = './log/xceptl50_stage1_ok3-ng/best_0.9913.h5'
-model_dir_4 = './log/xceptl50_stage1_ok4-ng/best_0.9907.h5'
+# IMG_HEIGHT = 200
+# dataset_folder = '../eval_SM_ok-ng'
+# # dataset_folder = '../eval_SM_ok-n2o'
+# model_dir_1 = './log/xceptl50_stage1_ok1-ng/best_0.9852.h5'
+# model_dir_2 = './log/xceptl50_stage1_ok2-ng/best_0.9819.h5'
+# model_dir_3 = './log/xceptl50_stage1_ok3-ng/best_0.9913.h5'
+# model_dir_4 = './log/xceptl50_stage1_ok4-ng/best_0.9907.h5'
 
 # IMG_HEIGHT = 140
 # dataset_folder = '../eval_MC_ok-ng'
@@ -35,6 +35,14 @@ model_dir_4 = './log/xceptl50_stage1_ok4-ng/best_0.9907.h5'
 # model_dir_3 = './log/xceptl50_stage1_MC_ok3-ng/best_0.9852.h5'
 # model_dir_4 = './log/xceptl50_stage1_MC_ok4-ng/best_0.9931.h5'
 
+IMG_HEIGHT = 168
+dataset_folder = '../eval_MM_ok-ng'
+# dataset_folder = '../eval_MM_ok-n2o'
+model_dir_1 = './log/xceptl50_stage1_MM_ok1-ng/best_0.9857.h5'
+model_dir_2 = './log/xceptl50_stage1_MM_ok2-ng/best_0.9836.h5'
+model_dir_3 = './log/xceptl50_stage1_MM_ok3-ng/best_0.9854.h5'
+model_dir_4 = './log/xceptl50_stage1_MM_ok4-ng/best_0.9943.h5'
+model_dir_5 = './log/xceptl50_stage1_MM_ok5-ng/best_1.0000.h5'
 #########arguments##########
 
 from imutils import paths
@@ -60,45 +68,33 @@ testX = img
 testY = labels
 
 
-def model_predict(model_dir, testX, BS):
-	model = load_model(model_dir)
-	predictions = model.predict(x=testX, batch_size=BS)
-	return predictions
-
-pred_1 = model_predict(model_dir_1, testX, BS)
-pred_2 = model_predict(model_dir_2, testX, BS)
-pred_3 = model_predict(model_dir_3, testX, BS)
-pred_4 = model_predict(model_dir_4, testX, BS)
-
-
-
-print(classification_report(testY.argmax(axis=1),
-	pred_1.argmax(axis=1), target_names=le.classes_, digits=5))
-print(classification_report(testY.argmax(axis=1),
-	pred_2.argmax(axis=1), target_names=le.classes_, digits=5))
-print(classification_report(testY.argmax(axis=1),
-	pred_3.argmax(axis=1), target_names=le.classes_, digits=5))
-print(classification_report(testY.argmax(axis=1),
-	pred_4.argmax(axis=1), target_names=le.classes_, digits=5))
-
 
 def threshold_pred(prediction, threshold):
 	thresholded_pred = []
 	for i in range(len(prediction)):
-		if prediction[i][1]>threshold:
+		if prediction[i][1]>threshold: 
 			thresholded_pred.append([0,1])
 		else: thresholded_pred.append([1,0])
 	return thresholded_pred
 
-pred_1 = threshold_pred(pred_1, 0.95)
-pred_2 = threshold_pred(pred_2, 0.95)
-pred_3 = threshold_pred(pred_3, 0.95)
-pred_4 = threshold_pred(pred_4, 0.95)
+def model_predict(model_dir, testX, BS, le):
+	model = load_model(model_dir)
+	predictions = model.predict(x=testX, batch_size=BS)
+	predictions = threshold_pred(predictions, 0.95)
+	# print(classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=le.classes_, digits=5))
+	return predictions
+
+pred_1 = model_predict(model_dir_1, testX, BS, le)
+pred_2 = model_predict(model_dir_2, testX, BS, le)
+pred_3 = model_predict(model_dir_3, testX, BS, le)
+pred_4 = model_predict(model_dir_4, testX, BS, le)
+pred_5 = model_predict(model_dir_5, testX, BS, le)
+
 
 
 final_pred = []
 for i in range(len(pred_1)):
-	if np.argmax(pred_1[i]) or np.argmax(pred_2[i]) or np.argmax(pred_3[i]) or np.argmax(pred_4[i]) == 1:
+	if np.argmax(pred_1[i]) or np.argmax(pred_2[i]) or np.argmax(pred_3[i]) or np.argmax(pred_4[i]) or np.argmax(pred_5[i]) == 1:
 		final_pred.append([0,1])
 	else: final_pred.append([1,0])
 final_pred = np.array(final_pred, dtype=np.uint8)

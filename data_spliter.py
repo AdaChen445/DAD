@@ -24,7 +24,7 @@ val_dir = input_dir+'/val'
 train_test_dir = input_dir+'/test_train'
 os.mkdir(val_dir)
 os.mkdir(train_test_dir)
-filenames = glob.glob(os.path.join(input_dir, '*.wav'))
+filenames = glob.glob(os.path.join(input_dir, '*'))
 total = len(filenames)
 
 

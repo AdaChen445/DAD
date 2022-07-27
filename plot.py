@@ -549,7 +549,7 @@ def melmfcc(y, sr, out_name, hop_length):
 ap = argparse.ArgumentParser()
 ap.add_argument('-l', required=True) #input folder label
 ap.add_argument('-f', required=True) #specmfcc/melchroma
-ap.add_argument('-o', default='temp_img_seperate')
+ap.add_argument('-o', default='label_seperate')
 args = vars(ap.parse_args())
 label = str(args['l'])
 fea_type = str(args['f'])
@@ -569,7 +569,7 @@ elif output_type == 'temp_img_serial': #outlier
 	input_path = '../'+label+'_audio'
 	output_path = '../temp_img'
 
-elif output_type in ('temp_img_seperate', 'stage1ok', 'stage1arg'):
+elif output_type in ('label_seperate', 'stage1ok', 'stage1arg'):
 	if fea_type == 'specMfcc':
 		fea_shorten = '_SM'
 	elif fea_type == 'melChroma':
@@ -594,7 +594,7 @@ filenames = glob.glob(os.path.join(input_path, '*.wav'))
 for idx,filename in enumerate(tqdm(filenames)):
 	fileID = filename.split(os.path.sep)[-1].replace('.wav', '.png')
 
-	if output_type in ('features', 'temp_img_seperate', 'stage1ok', 'stage1arg', 'dcaset2_train', 'dcaset2_test'):
+	if output_type in ('features', 'label_seperate', 'stage1ok', 'stage1arg', 'dcaset2_train', 'dcaset2_test'):
 		out_name = output_path + '/'+label+'_' + fileID
 	elif output_type == 'temp_img_serial':
 		out_name = output_path+ '/'+label+'_' + str(idx)

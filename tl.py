@@ -13,11 +13,11 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 from skimage.exposure import equalize_hist
 import sys
 from tqdm import tqdm
+import random
 from tensorflow.keras.optimizers import Adam, Nadam, Ftrl, SGD, Adagrad, Adamax, Adadelta
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import ModelCheckpoint
-from vit_keras import  vit
-import random
+import tensorflow as tf
 from tensorflow.keras.applications.inception_v3 import InceptionV3
 from tensorflow.keras.applications.xception import Xception
 from tensorflow.keras.applications.densenet import DenseNet121, DenseNet201
@@ -30,7 +30,8 @@ from tensorflow.keras.applications.densenet import preprocess_input as pi_d
 from tensorflow.keras.applications.resnet import preprocess_input as pi_r
 from tensorflow.keras.applications.resnet_v2 import preprocess_input as pi_r2
 from tensorflow.keras.applications.efficientnet_v2 import preprocess_input as pi_e
-import tensorflow as tf
+from vit_keras import  vit
+import tfimm
 
 
 #########arguments##########
@@ -47,12 +48,12 @@ is3channel = False
 import argparse
 ap = argparse.ArgumentParser()
 ap.add_argument('-n', required=True) #name
-ap.add_argument('-m', required=True) #modle
 ap.add_argument('-d', required=True) #datatype
-ap.add_argument('-l', required=True) #loss func
-ap.add_argument('-e', required=True) #epoch tl
-ap.add_argument('-c') #3channel 
-ap.add_argument('-tt') #test object
+ap.add_argument('-e', default=50) #epoch tl
+ap.add_argument('-m', default='xception') #model
+ap.add_argument('-l', default='mse') #loss func
+ap.add_argument('-c', default=False) #3channel
+ap.add_argument('-tt', default=200) #temp object
 args = vars(ap.parse_args())
 model_name = str(args['n'])
 model_type = str(args['m'])
@@ -63,9 +64,10 @@ is3channel = bool(args['c'])
 IMG_HIGHT = int(args['tt'])
 
 model_dir = './log/'+model_name
-if not model_name in ('tt', 'vit'): os.mkdir(model_dir)
+if not model_name == 'tt': os.mkdir(model_dir)
 model_dir = model_dir+'/'
-if model_type=='vit':
+
+if model_type in ('vit','deit','cait'):
 	IMG_WIDTH = IMGSIZE_VIT
 	IMG_HIGHT = IMGSIZE_VIT
 
@@ -86,8 +88,8 @@ for imagePath in tqdm(imagePaths):
 	if is3channel:
 		###custom 3-channel
 		imagePath1 = imagePath
-		imagePath2 = '../'+data_folder+'/c2/'+label+'/'+imagePath.split(os.path.sep)[-1]
-		imagePath3 = '../'+data_folder+'/c3/'+label+'/'+imagePath.split(os.path.sep)[-1]
+		imagePath2 = data_folder+'/c2/'+label+'/'+imagePath.split(os.path.sep)[-1]
+		imagePath3 = data_folder+'/c3/'+label+'/'+imagePath.split(os.path.sep)[-1]
 		img1 = cv2.imread(imagePath1, cv2.IMREAD_GRAYSCALE)
 		img1 = cv2.resize(img1,(IMG_WIDTH, IMG_HIGHT))#, interpolation=cv2.INTER_CUBIC)
 		img1 = np.array(img1, dtype=np.uint8)
@@ -100,9 +102,10 @@ for imagePath in tqdm(imagePaths):
 		image = np.dstack([img1, img2, img3]).astype(np.uint8)
 	else:
 		image = cv2.imread(imagePath)
-		if image.shape != (IMG_HIGHT,IMG_WIDTH,3):
-			print(imagePath, image.shape)
-			continue
+		if model_type not in ('vit', 'cait', 'deit'):
+			if image.shape != (IMG_HIGHT,IMG_WIDTH,3):
+				print(imagePath, image.shape)
+				continue
 		image = cv2.resize(image, (IMG_WIDTH, IMG_HIGHT)) #cv2 default is inter_linear
 		image = np.array(image, dtype=np.uint8)
 	# image = equalize_hist(image) #this return float
@@ -122,8 +125,8 @@ if loss_func=='triplet':
 else:
 	labels = to_categorical(labels, lebal_types)
 
-print(np.array(img).shape, np.array(labels).shape)
 (trainX, testX, trainY, testY) = train_test_split(img, labels, test_size=0.25, random_state=42)
+print('input shape: ',np.array(img).shape, 'output shape: ', np.array(labels).shape)
 
 
 
@@ -164,6 +167,14 @@ elif model_type == 'effiv2l':
 	base_model = EfficientNetV2L(weights='imagenet', include_top=False)#, input_shape=(IMG_HIGHT,IMG_WIDTH,IMG_DEPTH))
 	input_preprocessing = pi_e
 	freeze_layer = round(956*FREEZE_PERCENT)
+
+elif model_type == 'deit':
+	base_model = tfimm.create_model('deit_base_distilled_patch16_224', pretrained='timm', nb_classes=0)
+	input_preprocessing = tfimm.create_preprocessing('deit_base_distilled_patch16_224', dtype='float32')
+elif model_type == 'cait':
+	base_model = tfimm.create_model('cait_s24_224', pretrained='timm', nb_classes=0)
+	input_preprocessing = tfimm.create_preprocessing('cait_s24_224', dtype='float32')
+
 elif model_type == 'vit':
 	base_model = vit.vit_b16(image_size=IMGSIZE_VIT, pretrained=True, include_top=False, pretrained_top=False)
 elif model_type == 'stack':
@@ -173,15 +184,33 @@ elif model_type == 'stack':
 else: raise
 
 
-if model_type=='vit':
+if model_type == 'vit':
+	trainX = vit.preprocess_inputs(trainX)
+	testX = vit.preprocess_inputs(testX)
 	base_model.trainable = True
 	prediction_layer = tf.keras.layers.Dense(lebal_types, activation='sigmoid')
 	inputs = tf.keras.Input(shape=(IMGSIZE_VIT, IMGSIZE_VIT, 3))
-	x = base_model(inputs, training=True)
+	x = input_preprocessing(inputs)
+	x = base_model(x, training=True)
 	x = tf.keras.layers.Dropout(0.1)(x)
 	outputs = prediction_layer(x)
 	model = tf.keras.Model(inputs, outputs)
 	model.summary()
+
+elif model_type in ('deit', 'cait'):
+	trainX = input_preprocessing(trainX)
+	testX = input_preprocessing(testX)
+	base_model.trainable = True
+	prediction_layer = tf.keras.layers.Dense(lebal_types, activation='sigmoid')
+	inputs = tf.keras.Input(shape=(IMGSIZE_VIT, IMGSIZE_VIT, 3))
+	x = input_preprocessing(inputs)
+	x = base_model(x, training=True)
+	x = tf.keras.layers.Flatten()(x)
+	x = tf.keras.layers.Dropout(0.1)(x)
+	outputs = prediction_layer(x)
+	model = tf.keras.Model(inputs, outputs)
+	model.summary()
+
 elif model_type=='stack':
 	trainX = input_preprocessing(trainX)
 	testX = input_preprocessing(testX)
@@ -190,17 +219,11 @@ elif model_type=='stack':
 	inputs = tf.keras.Input(shape=(300, 300, 3))
 	x = input_preprocessing(inputs)
 	x = base_model_1(x, training=True)
-	print(x.shape)
-	x =  tf.keras.layers.GlobalAveragePooling2D()(x)
-	print(x.shape)
+	x = tf.keras.layers.GlobalAveragePooling2D()(x)
 	x = tf.keras.layers.RepeatVector(3)(x)
-	print(x.shape)
 	x = tf.keras.layers.Permute((2,1))(x)
-	print(x.shape)
 	x = tf.keras.layers.UpSampling1D(2)(x)
-	print(x.shape)
 	x = tf.keras.layers.Reshape((64,64,3))(x)
-	print(x.shape)
 	x = base_model_2(x, training=True)
 	x = tf.keras.layers.Dropout(0.1)(x)
 	outputs = tf.keras.layers.Dense(lebal_types, activation='sigmoid')(x)
@@ -224,18 +247,17 @@ else:
 	model.summary()
 
 
+opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / epoch)
+# opt = Nadam(learning_rate=INIT_LR, beta_1=0.9, beta_2=0.9)
+# opt = Adamax(learning_rate=INIT_LR, decay=INIT_LR / epoch)
+# opt = SGD(learning_rate=INIT_LR, decay=INIT_LR / epoch)
+
 model_checkpoint_callback = ModelCheckpoint(
 	filepath=model_dir+'best_{val_accuracy:.4f}.h5',
 	save_weights_only=False,
 	# monitor='val_loss', mode='min',
 	monitor='val_accuracy', mode='max',
 	save_best_only=True)
-
-opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / epoch)
-# opt = Nadam(learning_rate=INIT_LR, beta_1=0.9, beta_2=0.9)
-# opt = Adamax(learning_rate=INIT_LR, decay=INIT_LR / epoch)
-# opt = SGD(learning_rate=INIT_LR, decay=INIT_LR / epoch)
-
 model.compile(loss=loss_func, optimizer=opt, metrics=["accuracy"])
 H = model.fit(x=trainX, y=trainY, batch_size=BS,
 	validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,

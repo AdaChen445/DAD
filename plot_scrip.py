@@ -2,53 +2,22 @@ import subprocess
 import os
 
 def tsneplot(feature_type):
-	### new label
-	# subprocess.run('python plot_feature.py -l ok_1 -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ok_1loud -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ok_2 -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ok_3 -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ng_slap -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ng_loud -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ng_restart -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ng_ss -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ng_short -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ng_electro -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l n2o_pulse -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l bearing_good -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l bearing_bad -f '+feature_type,shell=True)
-	
-	### tsne & plot
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model inception',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model xception',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model dense121',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model dense201',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model resnet50v2',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model vgg16',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model ix',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model id',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model xd',shell=True)
-	# subprocess.run('python tsne_cluster.py -t new -f '+feature_type +' -mode tsne -model ixd',shell=True)
-
-	### plot feature & split & cluster
-	# subprocess.run('python plot_feature.py -l ok -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ng -f '+feature_type,shell=True)
-	# subprocess.run('python plot_feature.py -l ng2ok -f '+feature_type,shell=True)
+	### plot & split & cluster
+	# subprocess.run('python plot.py -l ok -f '+feature_type,shell=True)
+	# subprocess.run('python plot.py -l ng -f '+feature_type,shell=True)
+	# subprocess.run('python plot.py -l ng2ok -f '+feature_type,shell=True)
 
 	# subprocess.run('python data_spliter.py -d ../ok_MM -t ok ',shell=True)
-	# subprocess.run('python data_spliter.py -d ../ng_MM -t ok ',shell=True)
-	# subprocess.run('python data_spliter.py -d ../ng2ok_MM -t ok ',shell=True)
+	# subprocess.run('python data_spliter.py -d ../ng_MM -t other ',shell=True)
+	# subprocess.run('python data_spliter.py -d ../ng2ok_MM -t other ',shell=True)
 
-	# subprocess.run('python clustering.py  -f '+feature_type +' -c ac -model xception -in_path ok_MM', shell=True)
+	# subprocess.run('python cluster.py  -f '+feature_type +' -c ac -model xception -input_path ../ok_MM', shell=True)
 
 
-	### stage1
-	# subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1ok', shell=True)
-	# subprocess.run('python plot_feature.py -l ok -f '+feature_type +' -o stage1arg' ,shell=True)
-	# subprocess.run('python plot_feature.py -l outlier -f '+feature_type +' -o temp_img_serial' ,shell=True)
 
 	### dcaset2
-	# subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_train', shell=True)
-	# subprocess.run('python plot_feature.py -l fan -f '+feature_type +' -o dcaset2_test', shell=True)
+	# subprocess.run('python plot.py -l fan -f '+feature_type +' -o dcaset2_train', shell=True)
+	# subprocess.run('python plot.py -l fan -f '+feature_type +' -o dcaset2_test', shell=True)
 	
 	# subprocess.run('python tsne.py  -t fan -f '+feature_type ,shell=True)
 	# subprocess.run('python tsne.py  -t fan -f '+feature_type +' -model xception',shell=True)

@@ -38,19 +38,19 @@ from scipy.cluster.vq import whiten
 
 ap = argparse.ArgumentParser()
 ap.add_argument('-f', required=True)
-ap.add_argument('-c', required=False)
 ap.add_argument('-model', required=True)
-ap.add_argument('-in_path')
+ap.add_argument('-c', default='ac')
+ap.add_argument('-input_path')
 ap.add_argument('-eps')
 args = vars(ap.parse_args())
 model_name = str(args['model']) #inseption/xception/dense121/dense201/resnet50/resnet50v2/vgg16
 feature_type = str(args['f']) #spectrogram/specMfcc/specChroma/specMfccChroma/melSpec/melChroma or others
 cluster_type = str(args['c'])  #km/ap/ac/db/op/sp/sb/sc
-in_path = str(args['in_path'])
+input_path = str(args['input_path'])
 # eps = float(args['eps'])
 
 #########arguments##########
-cluster_img_path = '../'+in_path+'/test_train'
+cluster_img_path = input_path+'/test_train'
 cluster_audio_dir = '../ok_audio'
 
 cluster_type_dir = '../'+cluster_type
@@ -195,7 +195,7 @@ for i in range(cluster_classes):
 	os.mkdir(cluster_result_dir+'/audio/'+str(i))
 for i in range(len(cluster_df)):
 	shutil.copy(cluster_img_path+'/'+str(cluster_df['image_name'][i]), cluster_result_dir+'/img/'+str(cluster_df['cluster_label'][i]))
-	# shutil.copy(cluster_audio_dir+'/'+str(cluster_df['audio_name'][i]), cluster_result_dir+'/audio/'+str(cluster_df['cluster_label'][i]))
+	shutil.copy(cluster_audio_dir+'/'+str(cluster_df['audio_name'][i]), cluster_result_dir+'/audio/'+str(cluster_df['cluster_label'][i]))
 
 
 print('[INFO] visualizing...')
