@@ -99,9 +99,6 @@ def spectrum(y, sr, out_name, hop_length):
 	# # ax.set_yscale("log")
 	# fig.savefig(out_name)
 
-	img = scale_minmax(img, 0, 255).astype(np.uint8)
-	return np.array([img,img,img,img])
-
 def spectral_contrast(y, sr, out_name, hop_length):
 	### for training
 	D = librosa.feature.spectral_contrast(y=y, sr=sr, n_fft=hop_length*2,  hop_length=hop_length)

@@ -190,7 +190,7 @@ if model_type == 'vit':
 	base_model.trainable = True
 	prediction_layer = tf.keras.layers.Dense(lebal_types, activation='sigmoid')
 	inputs = tf.keras.Input(shape=(IMGSIZE_VIT, IMGSIZE_VIT, 3))
-	x = input_preprocessing(inputs)
+	x = vit.preprocess_inputs(inputs)
 	x = base_model(x, training=True)
 	x = tf.keras.layers.Dropout(0.1)(x)
 	outputs = prediction_layer(x)

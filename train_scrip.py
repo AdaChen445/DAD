@@ -25,9 +25,9 @@ import os
 # subprocess.run('python tl.py -n xceptl50_stage1_ok2-ng -d ok2-ng -e 50 -tt 200',shell=True)
 # subprocess.run('python tl.py -n xceptl50_stage1_ok3-ng -d ok3-ng  -e 50 -tt 200',shell=True)
 # subprocess.run('python tl.py -n xceptl50_stage1_ok4-ng -d ok4-ng  -e 50 -tt 200',shell=True)
-subprocess.run('python tl.py -n tfdeit50_stage1_ok-ng -m deit -d ok-ng -l mse -e 50',shell=True)
-subprocess.run('python tl.py -n tfcait50_stage1_ok-ng -m cait -d ok-ng -l mse -e 50',shell=True)
-subprocess.run('python tl.py -n tfvit50_stage1_ok-ng -m vit -d ok-ng -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n tfdeit50_stage1_ok-ng -m deit -d ok-ng -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n tfcait50_stage1_ok-ng -m cait -d ok-ng -l mse -e 50',shell=True)
+# subprocess.run('python tl.py -n tfvit50_stage1_ok-ng -m vit -d ok-ng -l mse -e 50',shell=True)
 
 ### MC ok-ng
 # subprocess.run('python tl.py -n xceptl50_stage1_MC_ok-ng -d MC_ok-ng -e 50 -tt 140',shell=True)

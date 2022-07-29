@@ -23,7 +23,6 @@ dataset_folder = '../eval_ok-ng'
 
 # model_dir = './log/xceptl50_stage1_ok-ngn2o/best_0.9404.h5'
 model_dir = './log/xceptl50_n2ocleaner_ok-ng/best_0.9698.h5'
-# model_dir = './log/xceptl50_n2ocleaner_okp-ng/best_0.9968.h5'
 #########arguments##########
 
 
